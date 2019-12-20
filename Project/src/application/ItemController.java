@@ -108,14 +108,19 @@ a = file.length();
      	try {
      		Connection connection = db.getConnection();
      		try {
+     			String q = "INSERT INTO item(ID,Name,Description,Price,Picture) VALUES(?,?,?,?,?)";
      			
-     			String sql = "INSERT INTO item VALUES('"+_ID+"','"+_name+"','"+_Description+"','"+_price+"', '"+fis+"')";
-     			Statement stmt = connection.createStatement();
+     			//String sql = "INSERT INTO item VALUES('"+_ID+"','"+_name+"','"+_Description+"','"+_price+"', '"+fis+"')";
+     			//Statement stmt = connection.createStatement();
      			
-     			stmt.executeUpdate(sql);
-     			
-     			
-     			
+     			//stmt.executeUpdate(sql);
+     			PreparedStatement stms = connection.prepareStatement(q);
+     			stms.setString(1,_ID);
+     			stms.setString(2, _name);
+stms.setString(3, _Description);    
+stms.setString(4, _price);
+stms.setBinaryStream(5, fis, a);
+stms.executeUpdate();
      			
      			
      		} catch (SQLException e) {
