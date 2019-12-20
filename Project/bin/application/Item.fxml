@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="735.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ItemController">
+   <children>
+      <Pane prefHeight="420.0" prefWidth="125.0" style="-fx-background-color: #7156DD;" />
+      <VBox layoutX="135.0" layoutY="88.0" prefHeight="290.0" prefWidth="202.0" AnchorPane.leftAnchor="135.0">
+         <children>
+            <TextField fx:id="ID" promptText="Item ID">
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="Name" promptText="Item Name">
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="Desription" promptText="Item Description">
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="Price" promptText="Item Price">
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </TextField>
+         </children>
+      </VBox>
+      <VBox layoutX="388.6" layoutY="88.0" prefHeight="122.0" prefWidth="202.0" AnchorPane.rightAnchor="9.0">
+         <children>
+            <ImageView fx:id="view" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children></VBox>
+      <Label layoutX="169.0" layoutY="43.0" text="Items Details : " textFill="#7156dd">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="Reset" layoutX="135.0" layoutY="347.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="111.0" style="-fx-background-color: #7156DD;" text="Reset All" />
+      <Button fx:id="Submit" layoutX="553.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="32.0" prefWidth="111.0" style="-fx-background-color: #7156DD;" text="Submit" />
+      <Button fx:id="Attach" layoutX="597.0" layoutY="246.0" mnemonicParsing="false" onAction="#AttachPicture" style="-fx-background-color: #7156DD;" text="Attach" />
+   </children>
+</AnchorPane>
