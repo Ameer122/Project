@@ -1,5 +1,6 @@
 package application;
 
+import java.awt.Event;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import javax.net.ssl.SSLException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,8 +30,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ItemController {
 
@@ -39,6 +43,8 @@ public class ItemController {
     @FXML
     private TextField Name;
 public long a;
+public long temper = 0;
+public int temp = 0;
     @FXML
     private TextField Desription;
 public FileInputStream fis;
@@ -56,7 +62,9 @@ public FileInputStream fis;
 
     @FXML
     private Button Attach;
-
+  public  AnchorPane root= null ;
+	
+	public Stage primaryStage= new Stage();
     @FXML
     void AttachPicture(ActionEvent event) {
     	 FileChooser fileChooser = new FileChooser();
@@ -122,7 +130,8 @@ stms.setString(4, _price);
 stms.setBinaryStream(5, fis, a);
 stms.executeUpdate();
      			
-     			
+Stage stager = (Stage) Submit.getScene().getWindow();
+stager.close();
      		} catch (SQLException e) {
      			// TODO Auto-generated catch block
      			e.printStackTrace();
@@ -161,6 +170,24 @@ stms.executeUpdate();
 			}
     		
     	}
+    	
+    }
+    void OpenScene() {
+    	try {
+    		
+    		this.root = (AnchorPane)FXMLLoader.load(getClass().getResource("Item.fxml"));
+    		 Scene scene = new Scene(root);
+			this.primaryStage.setTitle("LeLaic Company");
+			this.primaryStage.initStyle(StageStyle.UNDECORATED);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			this.primaryStage.setScene(scene);
+			this.primaryStage.show();
+			
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
     
     }
