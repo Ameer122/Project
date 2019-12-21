@@ -82,25 +82,9 @@ public class HomeController {
             pnlUsers.toFront();
         }
     	if (event.getSource() == additem) {
-    		try {
-    			
-    			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("Item.fxml"));
-    			Scene scene = new Scene(root);
-    			ItemController item = new ItemController();
-    			Stage primaryStage = new Stage();
-    			primaryStage.setTitle("LeLaic Company");
-    			primaryStage.initStyle(StageStyle.UNDECORATED);
-    			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-    			primaryStage.setScene(scene);
-    			primaryStage.show();
-    			if(event.getSource() == item.Submit)
-    			{
-    				primaryStage.close();
-    			}
-    			
-    		} catch(Exception e) {
-    			e.printStackTrace();
-    		}
+    		ItemController ite = new ItemController ();
+    		ite.OpenScene();
+    		
     	}
     }
          
