@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -15,9 +16,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -33,6 +36,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -72,7 +76,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private Pane pnlCat;
-
+    
     @FXML
     private Pane pnlUsers;
     
@@ -92,22 +96,22 @@ public class HomeController implements Initializable {
     @FXML
     private Button deluser;
     @FXML
-    private TableView<TableController> table;
-    private ObservableList<TableController> data;
+    private TableView<ItemController> table;
+    private ObservableList<ItemController> data;
     @FXML
-    private TableColumn<TableController, String> idcol;
+    private TableColumn<ItemController, String> idcol;
 
     @FXML
-    private TableColumn<TableController, String> namecol;
+    private TableColumn<ItemController, String> namecol;
 
     @FXML
-    private TableColumn<TableController, String> descol;
+    private TableColumn<ItemController, String> descol;
 
     @FXML
-    private TableColumn<TableController, String> pricecol;
-
+    private TableColumn<ItemController, String> pricecol;
+private AnchorPane rootpane;
     @FXML
-    private TableColumn<TableController, FileInputStream> piccol;
+    private TableColumn<ItemController, FileInputStream> piccol;
     @FXML
     private Button edituser;
     @FXML
@@ -123,62 +127,121 @@ public class HomeController implements Initializable {
             pnlUsers.toFront();
         }
     	if (event.getSource() == additem) {
-    		ItemController ite = new ItemController ();
-    		ite.OpenScene();
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("Item.fxml"));
+    		try {
+				Parent root = (Parent)loader.load();
+				ItemController ite = loader.getController();
+				Stage stage = new Stage();
+				stage.setScene(new Scene(root));
+				stage.show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		//ItemController ite = new ItemController ();
+    	//
+    		//ite.OpenScene();
+    		//ite.decider = false;
+    }
+    	if (event.getSource() == edititem) {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("EditItem.fxml"));
+    	 
+			try {
+				Parent root = (Parent)loader.load();
+				ItemController ite = loader.getController();
+				Stage stage = new Stage();
+				stage.setScene(new Scene(root));
+				stage.show();
+				ItemController t = table.getSelectionModel().getSelectedItem();
+				ite.ID2.setText(t.getId());
+				ite.Name2.setText(t.getname());
+				ite.Price2.setText(t.getprice());
+				ite.Desription2.setText(t.getdescription());
+			
+			
+			
+			
+			
+					
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			
     		
-    	}
+    }
+    	
+    	
     }
  
     	
     
-ObservableList<TableController> oblist = FXCollections.observableArrayList();
+ObservableList<ItemController> oblist = FXCollections.observableArrayList();
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-    	
-    	
-    	
 		DbConnect db = new DbConnect();
      	
      		try {
 				Connection connection = db.getConnection();
 				ResultSet rs = connection.createStatement().executeQuery("SELECT * From item");
 				while(rs.next())
-				{
-					
-					oblist.add(new TableController(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3)));
+				{	
+					ItemController s = new ItemController();
+					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
+					oblist.add(s);
 				}
 			} catch (SSLException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-     		
-    
-    	
-    
-    	
-    	
-    	
     	idcol.setCellValueFactory(  new PropertyValueFactory<>("id"));
 
     	namecol.setCellValueFactory(
                 new PropertyValueFactory<>("name"));
-    
-    	
-    	
+
     	descol.setCellValueFactory(
                 new PropertyValueFactory<>("description"));
 
-    
-        
-    	
     	pricecol.setCellValueFactory(
                 new PropertyValueFactory<>("price"));
         
        table.setItems(null);
  table.setItems(oblist);
+ 
+table.setEditable(true);
+idcol.setCellFactory(TextFieldTableCell.forTableColumn());
+ 
         
     }
+	public void ChangeFirst(CellEditEvent editedCell)
+	{
+		ItemController item = table.getSelectionModel().getSelectedItem();
+		item.setId(editedCell.getNewValue().toString());
+	}
+	public void ChangeID(CellEditEvent editedCell)
+	{
+		ItemController item = table.getSelectionModel().getSelectedItem();
+		item.setId(editedCell.getNewValue().toString());
+				
+	}
+	public void ChangeD(CellEditEvent editedCell)
+	{
+		ItemController item = table.getSelectionModel().getSelectedItem();
+		item.setdescription(editedCell.getNewValue().toString());
+				
+	}
+	public void Changeprice(CellEditEvent editedCell)
+	{
+		ItemController item = table.getSelectionModel().getSelectedItem();
+		item.setprice(editedCell.getNewValue().toString());
+		
+				
+	}
 }
 	  
     
