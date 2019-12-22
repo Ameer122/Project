@@ -102,22 +102,7 @@ public FileInputStream fis;
     @FXML
     public Button Submit2;
 
-    @FXML
-    private TableView<ItemController> tab;
-
-    @FXML
-    private TableColumn<ItemController, String> idcol;
-    
-    public boolean decider = false;
-
-    @FXML
-    private TableColumn<ItemController, String> namecol;
-
-    @FXML
-    private TableColumn<ItemController,String> descol;
-
-    @FXML
-    private TableColumn<ItemController, ?> pricecol;
+   
 
     ObservableList<ItemController> oblist = FXCollections.observableArrayList();
     
@@ -237,7 +222,7 @@ stms.executeUpdate();
     
     void OpenScene() {
     	try {
-    		this.decider = false;
+    		
     		this.root1 = (AnchorPane)FXMLLoader.load(getClass().getResource("Item.fxml"));
     		 Scene scene = new Scene(root1);
 			this.primaryStage.setTitle("LeLaic Company");
@@ -255,7 +240,7 @@ stms.executeUpdate();
     
     void OpenScene2() {
     	try {
-    		this.decider = true;
+    		
     		this.root = (AnchorPane)FXMLLoader.load(getClass().getResource("EditItem.fxml"));
     		 Scene scene = new Scene(root);
 			this.primaryStage1.setTitle("LeLaic Company");
@@ -322,38 +307,7 @@ stms.executeUpdate();
 @Override
 public void initialize(URL arg0, ResourceBundle arg1) {
 
-	DbConnect db1 = new DbConnect();
- 	
- 		try {
-			Connection connection = db1.getConnection();
-			ResultSet rs = connection.createStatement().executeQuery("SELECT * From item");
-			while(rs.next())
-			{	
-				ItemController s = new ItemController();
-				s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
-				oblist.add(s);
-			}
-		} catch (SSLException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
- 		
- 		if(decider==false) {
- 			idcol.setCellValueFactory(  new PropertyValueFactory<>("id"));
-
- 			namecol.setCellValueFactory(
- 		            new PropertyValueFactory<>("name"));
-
- 			descol.setCellValueFactory(
- 		            new PropertyValueFactory<>("description"));
-
- 			pricecol.setCellValueFactory(
- 		            new PropertyValueFactory<>("price"));
- 		    
- 		   tab.setItems(null);
- 		tab.setItems(oblist);
- 		
- 		}
+	
 	
 	
 	
@@ -378,37 +332,7 @@ public void initialize(URL arg0, ResourceBundle arg1) {
 
 @FXML
 void ChangeID(ActionEvent event) {
-	ItemController item = tab.getSelectionModel().getSelectedItem();
-	ItemControllers(item.getId(),item.getname(),item.getdescription(),item.getprice());
-	ID2.setText(item.getId());
-
-
 	
-	DbConnect db = new DbConnect();
-	Connection connection;
-	try {
-		connection = db.getConnection();
-		
-String test = "Select * From item Where ID = ? ";
-		
-		PreparedStatement stms = connection.prepareStatement(test);
-		
-		stms.setString(1, item.getId());
-		ResultSet rs = stms.executeQuery();
-		while(rs.next())
-		{
-			ID2.setText(rs.getString(1));
-			Name2.setText(rs.getString(2));
-			Desription2.setText(rs.getString(3));
-			Price2.setText(rs.getString(4));
-
-		}
-
-stms.executeUpdate();
-	} catch (SSLException | SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
 			
 }
 }
