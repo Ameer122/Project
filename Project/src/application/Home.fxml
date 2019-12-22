@@ -185,10 +185,10 @@
                      <children>
                         <TableView fx:id="table" prefHeight="295.0" prefWidth="710.0" stylesheets="@application.css" GridPane.rowIndex="1">
                            <columns>
-                              <TableColumn fx:id="idcol" prefWidth="75.0" text="ID" />
-                              <TableColumn fx:id="namecol" prefWidth="75.0" text="Item Name" />
-                              <TableColumn fx:id="descol" prefWidth="75.0" text="Item Description" />
-                              <TableColumn fx:id="pricecol" prefWidth="75.0" text="Price" />
+                              <TableColumn fx:id="idcol" onEditCommit="#ChangeID" prefWidth="75.0" text="ID" />
+                              <TableColumn fx:id="namecol" onEditCommit="#ChangeFirst" prefWidth="75.0" text="Item Name" />
+                              <TableColumn fx:id="descol" onEditCommit="#ChangeD" prefWidth="75.0" text="Item Description" />
+                              <TableColumn fx:id="pricecol" onEditCommit="#Changeprice" prefWidth="75.0" text="Price" />
                               <TableColumn fx:id="piccol" prefWidth="75.0" text="Item picture" />
                            </columns>
                            <columnResizePolicy>
