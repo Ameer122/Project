@@ -183,13 +183,13 @@
                         <RowConstraints maxHeight="345.2" minHeight="0.0" prefHeight="307.0000061035156" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <TableView prefHeight="295.0" prefWidth="710.0" stylesheets="@application.css" GridPane.rowIndex="1">
+                        <TableView fx:id="table" prefHeight="295.0" prefWidth="710.0" stylesheets="@application.css" GridPane.rowIndex="1">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="ID" />
-                              <TableColumn prefWidth="75.0" text="Item Name" />
-                              <TableColumn prefWidth="75.0" text="Item Description" />
-                              <TableColumn prefWidth="75.0" text="Price" />
-                              <TableColumn prefWidth="75.0" text="Item picture" />
+                              <TableColumn fx:id="idcol" prefWidth="75.0" text="ID" />
+                              <TableColumn fx:id="namecol" prefWidth="75.0" text="Item Name" />
+                              <TableColumn fx:id="descol" prefWidth="75.0" text="Item Description" />
+                              <TableColumn fx:id="pricecol" prefWidth="75.0" text="Price" />
+                              <TableColumn fx:id="piccol" prefWidth="75.0" text="Item picture" />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
