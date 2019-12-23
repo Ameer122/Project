@@ -206,7 +206,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button fx:id="delitem" graphicTextGap="10.0" layoutX="335.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="22.0" prefWidth="146.0" stylesheets="@application.css" text="Delete item" textFill="WHITE">
+                              <Button fx:id="delitem" graphicTextGap="10.0" layoutX="335.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="22.0" prefWidth="146.0" stylesheets="@application.css" text="Refresh Table!" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="17.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

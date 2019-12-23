@@ -104,9 +104,9 @@ public FileInputStream fis;
     public Button Submit2;
 
    
-
+   
     ObservableList<ItemController> oblist = FXCollections.observableArrayList();
-    
+
     
     
     
@@ -156,7 +156,7 @@ a = file.length();
     @FXML
     void handleClicks(ActionEvent event) throws SSLException {
     	if (event.getSource() == Submit) {
-          
+    	   
      	
      	DbConnect db = new DbConnect();
      	Connection connection = db.getConnection();
@@ -190,13 +190,15 @@ stager.close();
     }
     void Update() throws SSLException
     {
+        
+       
+			
+    	 ClientConsole client = new ClientConsole("ameer","127.0.0.1",5555);
     	DbConnect db = new DbConnect();
      	Connection connection = db.getConnection();
 		try {
 			String temp = ID2.getText();
 			String q = "update  item set ID=?,Name=?,Description=?,Price=? where ID = '"+temp+"'";
-			
-			System.out.println(ID2.getText());
 			PreparedStatement stms = connection.prepareStatement(q);
 			stms.setString(1,ID2.getText());
 			stms.setString(2,Name2.getText());
@@ -204,14 +206,16 @@ stms.setString(3,  Desription2.getText());
 stms.setString(4, Price2.getText());
 
 if(stms.executeUpdate()>0) {
-JOptionPane.showMessageDialog(null, "Details Of Item ID : " + ID2.getText() + "Has been Updated");
+client.sendtoserver();
 }		
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-         }
+        }
+        
+         
     
     void OpenScene() {
     	try {

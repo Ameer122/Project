@@ -1,1 +1,7 @@
 /application/
+/ocsf/
+/common/
+/client/
+/ClientConsole.class
+/EchoServer.class
+/ServerConsole.class
