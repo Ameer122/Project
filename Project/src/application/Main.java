@@ -14,7 +14,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 		
-			ClientConsole client = new ClientConsole("user","127.0.0.1",5555);
+		//	ClientConsole client = new ClientConsole("user","127.0.0.1",5555);
 			
 
 			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("Home.fxml"));
