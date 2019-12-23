@@ -187,7 +187,7 @@ private AnchorPane rootpane;
 				while(rs.next())
 				{	
 					ItemController s = new ItemController();
-					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
+					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
 					oblist.add(s);
 				}
 			} catch (SQLException e) {
@@ -231,7 +231,7 @@ ObservableList<ItemController> oblist = FXCollections.observableArrayList();
 				while(rs.next())
 				{	
 					ItemController s = new ItemController();
-					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
+					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
 					oblist.add(s);
 				}
 			} catch (SQLException e) {
