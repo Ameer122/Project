@@ -172,8 +172,45 @@ private AnchorPane rootpane;
 			
 			
 			
+			
+			
     		
     }
+    	if(event.getSource() == delitem)
+		{
+    		oblist.clear();
+			DbConnect db = new DbConnect();
+	     	
+     		try {
+				Connection connection = db.getConnection();
+				ResultSet rs = connection.createStatement().executeQuery("SELECT * From item");
+				while(rs.next())
+				{	
+					ItemController s = new ItemController();
+					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
+					oblist.add(s);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	idcol.setCellValueFactory(  new PropertyValueFactory<>("id"));
+
+    	namecol.setCellValueFactory(
+                new PropertyValueFactory<>("name"));
+
+    	descol.setCellValueFactory(
+                new PropertyValueFactory<>("description"));
+
+    	pricecol.setCellValueFactory(
+                new PropertyValueFactory<>("price"));
+        
+       table.setItems(null);
+ table.setItems(oblist);
+ 
+table.setEditable(true);
+idcol.setCellFactory(TextFieldTableCell.forTableColumn());
+		}
     	
     	}
     	

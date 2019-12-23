@@ -29,6 +29,7 @@ public Connection getConnection()
 	
 	//Statement stmt = null;
 	try {
+		
 		Class.forName(JDBC_DRIVER);
 		conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		//stmt = conn.createStatement();
