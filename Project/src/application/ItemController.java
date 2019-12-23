@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import javax.net.ssl.SSLException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -102,22 +103,7 @@ public FileInputStream fis;
     @FXML
     public Button Submit2;
 
-    @FXML
-    private TableView<ItemController> tab;
-
-    @FXML
-    private TableColumn<ItemController, String> idcol;
-    
-    public boolean decider = false;
-
-    @FXML
-    private TableColumn<ItemController, String> namecol;
-
-    @FXML
-    private TableColumn<ItemController,String> descol;
-
-    @FXML
-    private TableColumn<ItemController, ?> pricecol;
+   
 
     ObservableList<ItemController> oblist = FXCollections.observableArrayList();
     
@@ -168,38 +154,33 @@ a = file.length();
 		}
     }
     @FXML
-    void handleClicks(ActionEvent event) {
+    void handleClicks(ActionEvent event) throws SSLException {
     	if (event.getSource() == Submit) {
           
      	
      	DbConnect db = new DbConnect();
-     	try {
-     		Connection connection = db.getConnection();
-     		try {
-     			String q = "INSERT INTO item(ID,Name,Description,Price,Picture) VALUES(?,?,?,?,?)";
-     			
-     			//String sql = "INSERT INTO item VALUES('"+_ID+"','"+_name+"','"+_Description+"','"+_price+"', '"+fis+"')";
-     			//Statement stmt = connection.createStatement();
-     			
-     			//stmt.executeUpdate(sql);
-     			PreparedStatement stms = connection.prepareStatement(q);
-     			stms.setString(1,ID.getText());
-     			stms.setString(2, Name.getText());
+     	Connection connection = db.getConnection();
+		try {
+			String q = "INSERT INTO item(ID,Name,Description,Price,Picture) VALUES(?,?,?,?,?)";
+			
+			//String sql = "INSERT INTO item VALUES('"+_ID+"','"+_name+"','"+_Description+"','"+_price+"', '"+fis+"')";
+			//Statement stmt = connection.createStatement();
+			
+			//stmt.executeUpdate(sql);
+			PreparedStatement stms = connection.prepareStatement(q);
+			stms.setString(1,ID.getText());
+			stms.setString(2, Name.getText());
 stms.setString(3,  Desription.getText());    
 stms.setString(4, Price.getText());
 stms.setBinaryStream(5, fis, a);
 stms.executeUpdate();
-     			
+			
 Stage stager = (Stage) Submit.getScene().getWindow();
 stager.close();
-     		} catch (SQLException e) {
-     			// TODO Auto-generated catch block
-     			e.printStackTrace();
-     		}
-     		} catch (SSLException e) {
-     		// TODO Auto-generated catch block
-     		e.printStackTrace();
-     	}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
          }
     	if (event.getSource() == Submit2)
 		{
@@ -207,37 +188,34 @@ stager.close();
 		}
     	
     }
-    void Update()
+    void Update() throws SSLException
     {
     	DbConnect db = new DbConnect();
-     	try {
-     		Connection connection = db.getConnection();
-     		try {
-     			String temp = ID2.getText();
-     			String q = "update  item set ID=?,Name=?,Description=?,Price=? where ID = '"+temp+"'";
-     			
-     			System.out.println(ID2.getText());
-     			PreparedStatement stms = connection.prepareStatement(q);
-     			stms.setString(1,ID2.getText());
-     			stms.setString(2,Name2.getText());
+     	Connection connection = db.getConnection();
+		try {
+			String temp = ID2.getText();
+			String q = "update  item set ID=?,Name=?,Description=?,Price=? where ID = '"+temp+"'";
+			
+			System.out.println(ID2.getText());
+			PreparedStatement stms = connection.prepareStatement(q);
+			stms.setString(1,ID2.getText());
+			stms.setString(2,Name2.getText());
 stms.setString(3,  Desription2.getText());    
 stms.setString(4, Price2.getText());
-stms.executeUpdate();
-     			
 
-     		} catch (SQLException e) {
-     			// TODO Auto-generated catch block
-     			e.printStackTrace();
-     		}
-     		} catch (SSLException e) {
-     		// TODO Auto-generated catch block
-     		e.printStackTrace();
-     	}
+if(stms.executeUpdate()>0) {
+JOptionPane.showMessageDialog(null, "Details Of Item ID : " + ID2.getText() + "Has been Updated");
+}		
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
          }
     
     void OpenScene() {
     	try {
-    		this.decider = false;
+    		
     		this.root1 = (AnchorPane)FXMLLoader.load(getClass().getResource("Item.fxml"));
     		 Scene scene = new Scene(root1);
 			this.primaryStage.setTitle("LeLaic Company");
@@ -255,7 +233,7 @@ stms.executeUpdate();
     
     void OpenScene2() {
     	try {
-    		this.decider = true;
+    		
     		this.root = (AnchorPane)FXMLLoader.load(getClass().getResource("EditItem.fxml"));
     		 Scene scene = new Scene(root);
 			this.primaryStage1.setTitle("LeLaic Company");
@@ -322,38 +300,7 @@ stms.executeUpdate();
 @Override
 public void initialize(URL arg0, ResourceBundle arg1) {
 
-	DbConnect db1 = new DbConnect();
- 	
- 		try {
-			Connection connection = db1.getConnection();
-			ResultSet rs = connection.createStatement().executeQuery("SELECT * From item");
-			while(rs.next())
-			{	
-				ItemController s = new ItemController();
-				s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
-				oblist.add(s);
-			}
-		} catch (SSLException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
- 		
- 		if(decider==false) {
- 			idcol.setCellValueFactory(  new PropertyValueFactory<>("id"));
-
- 			namecol.setCellValueFactory(
- 		            new PropertyValueFactory<>("name"));
-
- 			descol.setCellValueFactory(
- 		            new PropertyValueFactory<>("description"));
-
- 			pricecol.setCellValueFactory(
- 		            new PropertyValueFactory<>("price"));
- 		    
- 		   tab.setItems(null);
- 		tab.setItems(oblist);
- 		
- 		}
+	
 	
 	
 	
@@ -374,41 +321,11 @@ public void initialize(URL arg0, ResourceBundle arg1) {
 		
 
 	
-}
+} 
 
 @FXML
 void ChangeID(ActionEvent event) {
-	ItemController item = tab.getSelectionModel().getSelectedItem();
-	ItemControllers(item.getId(),item.getname(),item.getdescription(),item.getprice());
-	ID2.setText(item.getId());
-
-
 	
-	DbConnect db = new DbConnect();
-	Connection connection;
-	try {
-		connection = db.getConnection();
-		
-String test = "Select * From item Where ID = ? ";
-		
-		PreparedStatement stms = connection.prepareStatement(test);
-		
-		stms.setString(1, item.getId());
-		ResultSet rs = stms.executeQuery();
-		while(rs.next())
-		{
-			ID2.setText(rs.getString(1));
-			Name2.setText(rs.getString(2));
-			Desription2.setText(rs.getString(3));
-			Price2.setText(rs.getString(4));
-
-		}
-
-stms.executeUpdate();
-	} catch (SSLException | SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
 			
 }
 }
