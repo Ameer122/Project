@@ -106,7 +106,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private TableColumn<ItemController, String> descol;
-
+    public ClientConsole client;
     @FXML
     private TableColumn<ItemController, String> pricecol;
 private AnchorPane rootpane;
@@ -134,6 +134,7 @@ private AnchorPane rootpane;
 				Stage stage = new Stage();
 				stage.setScene(new Scene(root));
 				stage.show();
+				ite.received(client);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -143,9 +144,14 @@ private AnchorPane rootpane;
     		//ite.OpenScene();
     		//ite.decider = false;
     }
+    	if(event.getSource() == test)
+    	{
+    		
+    		client = new ClientConsole("user","127.0.0.1",5555);
+    	}
     	if (event.getSource() == edititem) {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("EditItem.fxml"));
-    	 
+    		
 			try {
 				Parent root = (Parent)loader.load();
 				ItemController ite = loader.getController();
@@ -157,7 +163,8 @@ private AnchorPane rootpane;
 				ite.Name2.setText(t.getname());
 				ite.Price2.setText(t.getprice());
 				ite.Desription2.setText(t.getdescription());
-			
+		ite.received(client);
+
 			
 			
 			
@@ -176,6 +183,7 @@ private AnchorPane rootpane;
 			
     		
     }
+    	
     	if(event.getSource() == delitem)
 		{
     		oblist.clear();
@@ -187,7 +195,7 @@ private AnchorPane rootpane;
 				while(rs.next())
 				{	
 					ItemController s = new ItemController();
-					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
+					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
 					oblist.add(s);
 				}
 			} catch (SQLException e) {
@@ -231,7 +239,7 @@ ObservableList<ItemController> oblist = FXCollections.observableArrayList();
 				while(rs.next())
 				{	
 					ItemController s = new ItemController();
-					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
+					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
 					oblist.add(s);
 				}
 			} catch (SQLException e) {

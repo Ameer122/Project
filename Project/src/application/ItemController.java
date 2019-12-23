@@ -23,6 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -83,7 +84,7 @@ public FileInputStream fis;
     @FXML
     private Button Attach;
     
-    
+   private Boolean bol = false;
 
     @FXML
    public TextField ID2;
@@ -104,11 +105,11 @@ public FileInputStream fis;
     public Button Submit2;
 
    
-   
+   public ClientConsole cl;
     ObservableList<ItemController> oblist = FXCollections.observableArrayList();
-
+//public ClientConsole client;
     
-    
+ //  public ClientConsole client = new ClientConsole("ameer","127.0.0.1",5555);
     
   public  AnchorPane root= null ;
   public  AnchorPane root1= null ;
@@ -153,6 +154,15 @@ a = file.length();
 			e.printStackTrace();
 		}
     }
+    void received(ClientConsole client)
+    {
+    	cl = client;
+    	/*if(this.bol == true) {
+    	client.sendtoserver();
+    	bol = false;
+    	}*/
+    	
+    }
     @FXML
     void handleClicks(ActionEvent event) throws SSLException {
     	if (event.getSource() == Submit) {
@@ -173,7 +183,9 @@ a = file.length();
 stms.setString(3,  Desription.getText());    
 stms.setString(4, Price.getText());
 stms.setBinaryStream(5, fis, a);
-stms.executeUpdate();
+if(stms.executeUpdate()>0) {
+cl.sendtoserver();
+}
 			
 Stage stager = (Stage) Submit.getScene().getWindow();
 stager.close();
@@ -184,16 +196,19 @@ stager.close();
          }
     	if (event.getSource() == Submit2)
 		{
+    		
     		Update();
+    		
 		}
     	
     }
+
     void Update() throws SSLException
     {
         
        
 			
-    	 ClientConsole client = new ClientConsole("ameer","127.0.0.1",5555);
+    	setbol(true);
     	DbConnect db = new DbConnect();
      	Connection connection = db.getConnection();
 		try {
@@ -206,7 +221,7 @@ stms.setString(3,  Desription2.getText());
 stms.setString(4, Price2.getText());
 
 if(stms.executeUpdate()>0) {
-client.sendtoserver();
+cl.sendtoserver();
 }		
 
 		} catch (SQLException e) {
@@ -296,6 +311,10 @@ client.sendtoserver();
     {
     	ID.setText(str);
     }
+    public void setbol(Boolean bo)
+    {this.bol = bo;}
+    public Boolean getbool()
+    {return this.bol;}
     public StringProperty nameProperty() {return name;}
     public StringProperty idProperty() {return id;}
     public StringProperty priceProperty() {return price;}
@@ -304,33 +323,16 @@ client.sendtoserver();
 @Override
 public void initialize(URL arg0, ResourceBundle arg1) {
 
-	
-	
-	
-	
 //	ID2.setText((String)a.idProperty().get());
 	// Name2.setText((String)a.nameProperty().get());
 	// Desription2.setText((String)a.descriptionProperty().get());
 	// Price2.setText((String)a.priceProperty().get());
-	
-
-   
-
-
-
-
-		
-		
-			
-		
 
 	
 } 
 
 @FXML
-void ChangeID(ActionEvent event) {
-	
-			
+void ChangeID(ActionEvent event) {			
 }
 }
 
