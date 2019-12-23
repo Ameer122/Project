@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import javax.net.ssl.SSLException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -153,38 +154,33 @@ a = file.length();
 		}
     }
     @FXML
-    void handleClicks(ActionEvent event) {
+    void handleClicks(ActionEvent event) throws SSLException {
     	if (event.getSource() == Submit) {
           
      	
      	DbConnect db = new DbConnect();
-     	try {
-     		Connection connection = db.getConnection();
-     		try {
-     			String q = "INSERT INTO item(ID,Name,Description,Price,Picture) VALUES(?,?,?,?,?)";
-     			
-     			//String sql = "INSERT INTO item VALUES('"+_ID+"','"+_name+"','"+_Description+"','"+_price+"', '"+fis+"')";
-     			//Statement stmt = connection.createStatement();
-     			
-     			//stmt.executeUpdate(sql);
-     			PreparedStatement stms = connection.prepareStatement(q);
-     			stms.setString(1,ID.getText());
-     			stms.setString(2, Name.getText());
+     	Connection connection = db.getConnection();
+		try {
+			String q = "INSERT INTO item(ID,Name,Description,Price,Picture) VALUES(?,?,?,?,?)";
+			
+			//String sql = "INSERT INTO item VALUES('"+_ID+"','"+_name+"','"+_Description+"','"+_price+"', '"+fis+"')";
+			//Statement stmt = connection.createStatement();
+			
+			//stmt.executeUpdate(sql);
+			PreparedStatement stms = connection.prepareStatement(q);
+			stms.setString(1,ID.getText());
+			stms.setString(2, Name.getText());
 stms.setString(3,  Desription.getText());    
 stms.setString(4, Price.getText());
 stms.setBinaryStream(5, fis, a);
 stms.executeUpdate();
-     			
+			
 Stage stager = (Stage) Submit.getScene().getWindow();
 stager.close();
-     		} catch (SQLException e) {
-     			// TODO Auto-generated catch block
-     			e.printStackTrace();
-     		}
-     		} catch (SSLException e) {
-     		// TODO Auto-generated catch block
-     		e.printStackTrace();
-     	}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
          }
     	if (event.getSource() == Submit2)
 		{
@@ -192,32 +188,29 @@ stager.close();
 		}
     	
     }
-    void Update()
+    void Update() throws SSLException
     {
     	DbConnect db = new DbConnect();
-     	try {
-     		Connection connection = db.getConnection();
-     		try {
-     			String temp = ID2.getText();
-     			String q = "update  item set ID=?,Name=?,Description=?,Price=? where ID = '"+temp+"'";
-     			
-     			System.out.println(ID2.getText());
-     			PreparedStatement stms = connection.prepareStatement(q);
-     			stms.setString(1,ID2.getText());
-     			stms.setString(2,Name2.getText());
+     	Connection connection = db.getConnection();
+		try {
+			String temp = ID2.getText();
+			String q = "update  item set ID=?,Name=?,Description=?,Price=? where ID = '"+temp+"'";
+			
+			System.out.println(ID2.getText());
+			PreparedStatement stms = connection.prepareStatement(q);
+			stms.setString(1,ID2.getText());
+			stms.setString(2,Name2.getText());
 stms.setString(3,  Desription2.getText());    
 stms.setString(4, Price2.getText());
-stms.executeUpdate();
-     			
 
-     		} catch (SQLException e) {
-     			// TODO Auto-generated catch block
-     			e.printStackTrace();
-     		}
-     		} catch (SSLException e) {
-     		// TODO Auto-generated catch block
-     		e.printStackTrace();
-     	}
+if(stms.executeUpdate()>0) {
+JOptionPane.showMessageDialog(null, "Details Of Item ID : " + ID2.getText() + "Has been Updated");
+}		
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
          }
     
     void OpenScene() {
@@ -328,7 +321,7 @@ public void initialize(URL arg0, ResourceBundle arg1) {
 		
 
 	
-}
+} 
 
 @FXML
 void ChangeID(ActionEvent event) {

@@ -175,8 +175,10 @@ private AnchorPane rootpane;
     		
     }
     	
+    	}
     	
-    }
+    	
+    
  
     	
     
@@ -195,7 +197,7 @@ ObservableList<ItemController> oblist = FXCollections.observableArrayList();
 					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(3));
 					oblist.add(s);
 				}
-			} catch (SSLException | SQLException e) {
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -218,6 +220,8 @@ idcol.setCellFactory(TextFieldTableCell.forTableColumn());
  
         
     }
+	
+	
 	public void ChangeFirst(CellEditEvent editedCell)
 	{
 		ItemController item = table.getSelectionModel().getSelectedItem();
