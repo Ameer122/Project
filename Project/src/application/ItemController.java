@@ -198,7 +198,6 @@ stager.close();
 		{
     		
     		Update();
-    		
 		}
     	
     }

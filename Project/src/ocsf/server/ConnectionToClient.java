@@ -124,7 +124,8 @@ public class ConnectionToClient extends Thread
   {
     if (clientSocket == null || output == null)
       throw new SocketException("socket does not exist");
-    JOptionPane.showMessageDialog(null, "The List has been Updated, Please Restart the Client or click on the Refresh Button!!");
+    if(msg.toString().equalsIgnoreCase("e")) {
+    JOptionPane.showMessageDialog(null, "The List has been Updated, Please Restart the Client or click on the Refresh Button!!");}
     output.writeObject(msg);
   }
 

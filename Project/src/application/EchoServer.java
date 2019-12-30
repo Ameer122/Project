@@ -102,7 +102,7 @@ public class EchoServer extends AbstractServer
       JOptionPane.showMessageDialog(null, "The List has been Updated, Please Refresh!");
       System.out.println("Message received: " + msg + " from \"" + 
         client.getInfo("loginID") + "\" " + client);
-      this.sendToAllClients(" \"The List has been Updated, Please Refresh!\"") ;
+      this.sendToAllClients(" The List has been Updated, Please Refresh!") ;
     }
   }
 
