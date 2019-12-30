@@ -68,7 +68,7 @@ public class ClientConsole implements ChatIF
   public void sendtoserver()
   {
 	  try {
-		client.sendToServer("The List has been updated, please Refresh The Client!");
+		client.sendToServer("e");
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
