@@ -3,14 +3,17 @@ package application;
 
 
 public class User {
-
-	private String username;
-	private String password;
 	private String id;
 	private String firstname;
 	private String lastname;
+	private String username;
+	private String password;
+	
 	private String email;
 	private String card;
+	private String Date;
+	private String Status;
+	
 	
 //GET
 	
@@ -19,6 +22,13 @@ public class User {
 	public String getId()
     {
     	return id;
+    }
+	public String getDate()
+    {
+    	return Date;
+    }public String getStatus()
+    {
+    	return Status;
     }
 	public String getUsername()
 	{
@@ -49,6 +59,13 @@ public class User {
 	public void setId(String str)
     {
     	this.id = str;
+    }
+	public void setDate(String str)
+    {
+    	this.Date = str;
+    }public void setStatus(String str)
+    {
+    	this.Status = str;
     }
 	public void setusername(String str)
     {

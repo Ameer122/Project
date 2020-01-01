@@ -37,6 +37,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -178,6 +179,40 @@ public class HomeController implements Initializable {
     @FXML
     private Button signupbtn;
     
+    
+    //User Table
+    @FXML
+    private TableView<User> TableUser;
+
+    @FXML
+    private TableColumn<User, String> IDUser;
+
+    @FXML
+    private TableColumn<User, String> FirstUser;
+
+    @FXML
+    private TableColumn<User, String> LastUser;
+
+    @FXML
+    private TableColumn<User, String> MailUser;
+
+    @FXML
+    private TableColumn<User, String> UsernameUser;
+
+    @FXML
+    private TableColumn<User, String> PassUser;
+
+    @FXML
+    private TableColumn<User, String> CardUser;
+
+    @FXML
+    private TableColumn<User, String> DateUser;
+
+    @FXML
+    private TableColumn<User, String> StatusUser;
+    
+    
+    
     @FXML
     void handleClicks(ActionEvent event) {
     	if (event.getSource() == btncat) {
@@ -217,9 +252,11 @@ public class HomeController implements Initializable {
 					       	Signuppan.setVisible(false);
 					           Loginpan.setVisible(false);
 					          labname.setText(user.getUsername());
-					          btnlogin.setVisible(false);
-					          if(labname.getText().equals("ameer"))
-					          {
+					         
+					          btnlogin.setText(user.getUsername());
+					          btnlogin.setDisable(true);
+					
+					     if(resultset.getString(9).equals("2"))     {
 					         	 btnuser.setVisible(true);
 					         	 btnworker.setVisible(true);
 					         	 btnsetting.setVisible(true);
@@ -269,6 +306,7 @@ public class HomeController implements Initializable {
   	Signuppan.setVisible(false);
       Loginpan.setVisible(false);
      labname.setText(user.getUsername());
+  
      btnlogin.setVisible(false);
    }
 			} catch (SQLException e) {
@@ -400,7 +438,7 @@ idcol.setCellFactory(TextFieldTableCell.forTableColumn());
     
  
     	
-    
+    ObservableList<User> olist = FXCollections.observableArrayList();
 ObservableList<ItemController> oblist = FXCollections.observableArrayList();
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -437,7 +475,66 @@ ObservableList<ItemController> oblist = FXCollections.observableArrayList();
 table.setEditable(true);
 idcol.setCellFactory(TextFieldTableCell.forTableColumn());
  
-        
+try {
+	Connection conn = db.getConnection();
+	ResultSet rs = conn.createStatement().executeQuery("SELECT * From users");
+	while(rs.next())
+	{	
+		User user = new User();
+		user.setId(rs.getString(1));
+		user.setfirstname(rs.getString(2));
+		user.setlastname(rs.getString(3));
+		user.setemail(rs.getString(4));
+		user.setusername(rs.getString(5));
+		user.setpassword(rs.getString(6));
+		
+		
+		
+		user.setcard(rs.getString(7));
+		user.setDate(rs.getString(8));
+		user.setStatus(rs.getString(9));
+		olist.add(user);
+	}
+} catch (SQLException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+
+
+
+
+
+
+
+
+
+IDUser.setCellValueFactory(  new PropertyValueFactory<>("id"));
+
+FirstUser.setCellValueFactory(
+    new PropertyValueFactory<>("firstname"));
+
+LastUser.setCellValueFactory(
+    new PropertyValueFactory<>("lastname"));
+
+MailUser.setCellValueFactory(
+    new PropertyValueFactory<>("email"));
+UsernameUser.setCellValueFactory(
+	    new PropertyValueFactory<>("username"));
+PassUser.setCellValueFactory(
+	    new PropertyValueFactory<>("password"));
+CardUser.setCellValueFactory(
+	    new PropertyValueFactory<>("card"));
+DateUser.setCellValueFactory(
+	    new PropertyValueFactory<>("date"));
+StatusUser.setCellValueFactory(
+	    new PropertyValueFactory<>("status"));
+
+TableUser.setItems(null);
+TableUser.setItems(olist);
+
+
+
+
     }
 	
 	
