@@ -130,6 +130,7 @@ public class ChatClient extends AbstractClient
     {
       quit();
     }
+    
     else if (message.equalsIgnoreCase("#logoff"))
     {
       try

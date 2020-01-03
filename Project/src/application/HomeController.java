@@ -54,6 +54,7 @@ import javafx.event.EventHandler;
 
 
 public class HomeController implements Initializable {
+	ObservableList<Orders> OrdersList = FXCollections.observableArrayList(); // Orders Table View
 	public User user = new User();
 	public User userreg = new User();
     @FXML
@@ -86,6 +87,8 @@ public class HomeController implements Initializable {
     @FXML
     private Button btnuser;
 
+    @FXML
+    private Button tet;
     @FXML
     private Button btnsetting;
 
@@ -147,7 +150,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private Button login;
-    
+    //Ends Here
     //SignUp Panel
     
 
@@ -178,7 +181,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private Button signupbtn;
-    
+    //Ends Here
     
     //User Table
     @FXML
@@ -210,11 +213,54 @@ public class HomeController implements Initializable {
 
     @FXML
     private TableColumn<User, String> StatusUser;
+    //Ends Here
     
-    
+     //Orders Panel
     
     @FXML
+    private Pane Orderspnl;
+
+    @FXML
+    private Label labelname21;
+
+    @FXML
+    private TableView<Orders> TableOrder;
+
+    @FXML
+    private TableColumn<Orders, String> CustomerName;
+
+    @FXML
+    private TableColumn<Orders, String> ProductName;
+
+    @FXML
+    private TableColumn<Orders, String> ProductPrice;
+
+    @FXML
+    private TableColumn<Orders, String> PurchaseDate;
+
+    @FXML
+    private TableColumn<Orders, String> DeliveryDate;
+
+    @FXML
+    private TableColumn<Orders, String> CreditCard;
+
+    @FXML
+    private TableColumn<Orders, String> Typeofpayment;
+
+    @FXML
+    private TableColumn<Orders, String> Numberofinstallments;
+    // ends here
+    @FXML
     void handleClicks(ActionEvent event) {
+    	if(event.getSource() == tet)
+    	{
+    		try {
+				client.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     	if (event.getSource() == btncat) {
            // pnlcat.setStyle("-fx-background-color : #1620A1");
     	
@@ -225,11 +271,21 @@ public class HomeController implements Initializable {
     	if (event.getSource() == btnlogin) {
             // pnlcat.setStyle("-fx-background-color : #1620A1");
      	
+    		
+    		
             Loginpan.toFront();
         	Signuppan.setVisible(true);
             Loginpan.setVisible(true);
          }
+    	if(event.getSource() == btnfee)
+    	{
+    		Orderspnl.toFront();
+    		Signuppan.setVisible(false);
+            Loginpan.setVisible(false);
+         
+         
     	
+    	}
     	
     	
     	//Login to database using an account
@@ -247,7 +303,7 @@ public class HomeController implements Initializable {
 				if(resultset.next())
 				{
 					
-						ClientConsole client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
+						client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
 						 CatControlpnl.toFront();
 					       	Signuppan.setVisible(false);
 					           Loginpan.setVisible(false);
@@ -269,7 +325,77 @@ public class HomeController implements Initializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-    	}
+			
+			//Order Table View
+	         //DbConnect db = new DbConnect();
+	          try {
+	          	Connection con = db.getConnection();
+	          	if(client.name.equals("ameer"))
+	          	{
+	          		ResultSet rs = con.createStatement().executeQuery("SELECT * From Orders ");
+	          
+	          	
+	          	
+	          	while(rs.next())
+	          	{	
+	          		Orders order = new Orders();
+	          		order.setname(rs.getString(1));
+	          		order.setproduct(rs.getString(2));
+	          order.setprice(rs.getString(3));
+	          order.setdate(rs.getString(4));
+	          order.setdelivery(rs.getString(5));
+	          order.setcard(rs.getString(6));
+	          order.settype(rs.getString(7));
+	          order.setinstallments(rs.getString(7));
+	          		
+	          		OrdersList.add(order);
+	          	}
+	          	}
+	          	else
+	          	{
+	          		ResultSet rs = con.createStatement().executeQuery("SELECT * From Orders WHERE Customer= '" + client.name + "'");
+	          	   	while(rs.next())
+		          	{	
+		          		Orders order = new Orders();
+		          		order.setname(rs.getString(1));
+		          		order.setproduct(rs.getString(2));
+		          order.setprice(rs.getString(3));
+		          order.setdate(rs.getString(4));
+		          order.setdelivery(rs.getString(5));
+		          order.setcard(rs.getString(6));
+		          order.settype(rs.getString(7));
+		          order.setinstallments(rs.getString(7));
+		          		
+		          		OrdersList.add(order);
+	          	}
+	          	}
+	          } catch (SQLException e) {
+	          	// TODO Auto-generated catch block
+	          	e.printStackTrace();
+	          }
+	          CustomerName.setCellValueFactory(  new PropertyValueFactory<>("name"));
+
+	          ProductName.setCellValueFactory(
+	            new PropertyValueFactory<>("product"));
+
+	          ProductPrice.setCellValueFactory(
+	            new PropertyValueFactory<>("price"));
+
+	          PurchaseDate.setCellValueFactory(
+	            new PropertyValueFactory<>("date"));
+	          DeliveryDate.setCellValueFactory(
+	          	    new PropertyValueFactory<>("delivery"));
+	          CreditCard.setCellValueFactory(
+	          	    new PropertyValueFactory<>("card"));
+	          Typeofpayment.setCellValueFactory(
+	          	    new PropertyValueFactory<>("type"));
+	          Numberofinstallments.setCellValueFactory(
+	          	    new PropertyValueFactory<>("installments"));
+	          TableOrder.setItems(null);
+	          TableOrder.setItems(OrdersList);
+			 
+	          }
+    	
 			
     	
     	if(event.getSource() == signupbtn)
@@ -301,7 +427,7 @@ public class HomeController implements Initializable {
    stms.setString(7,userreg.getCard());
    if(stms.executeUpdate()>0)
    {
-   ClientConsole client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
+    client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
    CatControlpnl.toFront();
   	Signuppan.setVisible(false);
       Loginpan.setVisible(false);
@@ -438,11 +564,12 @@ idcol.setCellFactory(TextFieldTableCell.forTableColumn());
     
  
     	
-    ObservableList<User> olist = FXCollections.observableArrayList();
-ObservableList<ItemController> oblist = FXCollections.observableArrayList();
+    ObservableList<User> olist = FXCollections.observableArrayList(); //Users Table View
+ObservableList<ItemController> oblist = FXCollections.observableArrayList(); // Catalog Table View
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
+//Catalog Table View
 		DbConnect db = new DbConnect();
      	
      		try {
@@ -475,6 +602,8 @@ ObservableList<ItemController> oblist = FXCollections.observableArrayList();
 table.setEditable(true);
 idcol.setCellFactory(TextFieldTableCell.forTableColumn());
  
+
+//Users Table View
 try {
 	Connection conn = db.getConnection();
 	ResultSet rs = conn.createStatement().executeQuery("SELECT * From users");
@@ -532,10 +661,11 @@ StatusUser.setCellValueFactory(
 TableUser.setItems(null);
 TableUser.setItems(olist);
 
+	}
 
 
 
-    }
+    
 	
 	
 	public void ChangeFirst(CellEditEvent editedCell)

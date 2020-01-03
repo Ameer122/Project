@@ -75,6 +75,7 @@ public class ServerConsole implements ChatIF
   {
     try
     {
+    	
       BufferedReader fromConsole = 
         new BufferedReader(new InputStreamReader(System.in));
       String message;
