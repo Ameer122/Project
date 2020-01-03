@@ -112,6 +112,7 @@ public class ClientConsole implements ChatIF
 public void close() throws IOException
 {
 	client.closeConnection();
+	
 }
   
   //Class methods ***************************************************

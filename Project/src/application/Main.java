@@ -17,6 +17,7 @@ public class Main extends Application {
 		//	ClientConsole client = new ClientConsole("user","127.0.0.1",5555);
 			
 
+			
 			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("Home.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("LeLaic Company");

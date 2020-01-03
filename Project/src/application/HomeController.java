@@ -271,6 +271,8 @@ public class HomeController implements Initializable {
     	if (event.getSource() == btnlogin) {
             // pnlcat.setStyle("-fx-background-color : #1620A1");
      	
+    		
+    		
             Loginpan.toFront();
         	Signuppan.setVisible(true);
             Loginpan.setVisible(true);

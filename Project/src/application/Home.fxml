@@ -507,6 +507,6 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="tet" layoutX="547.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleClicks" text="Button" />
+      <Button fx:id="tet" layoutX="546.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleClicks" text="Button" />
    </children>
 </AnchorPane>
