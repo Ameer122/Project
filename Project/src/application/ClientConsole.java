@@ -19,6 +19,7 @@ import common.*;
  */
 public class ClientConsole implements ChatIF 
 {
+	String name;
   //Class variables *************************************************
   
   /**
@@ -48,6 +49,7 @@ public class ClientConsole implements ChatIF
     try 
     {
       client= new ChatClient(loginID, host, port, this);
+      this.name = loginID;
     } 
     catch(IOException exception) 
     {
@@ -56,6 +58,7 @@ public class ClientConsole implements ChatIF
       System.exit(1);
     }
   }
+  
 
   
   //Instance methods ************************************************
@@ -106,7 +109,10 @@ public class ClientConsole implements ChatIF
   {
     System.out.println(message);
   }
-
+public void close() throws IOException
+{
+	client.closeConnection();
+}
   
   //Class methods ***************************************************
   
