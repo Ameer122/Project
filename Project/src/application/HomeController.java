@@ -18,6 +18,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -29,6 +30,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import javafx.scene.input.MouseEvent;
+
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -45,6 +48,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 
 import javax.net.ssl.SSLException;
+import javax.swing.JOptionPane;
 
 import javafx.scene.input.KeyEvent;
 
@@ -55,15 +59,20 @@ import javafx.event.EventHandler;
 
 public class HomeController implements Initializable {
 	ObservableList<Orders> OrdersList = FXCollections.observableArrayList(); // Orders Table View
+	ObservableList<Reports> ReportsList = FXCollections.observableArrayList(); // Orders Table View
 	public User user = new User();
 	public User userreg = new User();
+	public Reports report = new Reports();
     @FXML
     private ResourceBundle resources;
     @FXML
     private Pane userpan;
     @FXML
     private Label labelname2;
-
+    @FXML
+    private Pane paneowner;
+    @FXML
+    private Pane paneuser;
     @FXML
     private Pane UserControlpnl;
     @FXML
@@ -175,7 +184,9 @@ public class HomeController implements Initializable {
 
     @FXML
     private TextField tf_LastNameSignup;
-
+    @FXML
+    private TextField tf_phone;
+    
     @FXML
     private TextField tf_CardSignup;
 
@@ -250,12 +261,86 @@ public class HomeController implements Initializable {
     @FXML
     private TableColumn<Orders, String> Numberofinstallments;
     // ends here
+    
+    
+    //Complaints 
+    
+    
+    
+    @FXML
+    private Pane Complaintpnl;
+
+    @FXML
+    private Label labelname211;
+
+    @FXML
+    private TableView<Reports> tablecomplain;
+
+    @FXML
+    private TableColumn<Reports,String> usernamecol;
+
+    @FXML
+    private TableColumn<Reports, String> emailcol;
+
+    @FXML
+    private TableColumn<Reports, String> datecol;
+
+    @FXML
+    private TableColumn<Reports, String> phonecol;
+
+    @FXML
+    private TableColumn<Reports, String> complaintcol;
+
+    @FXML
+    private TableColumn<Reports, String> statuscol;
+
+    @FXML
+    private Button addcomplaint;
+
+    @FXML
+    private Button readcomplaint;
+
+    @FXML
+    private TextField complaintuser;
+
+    @FXML
+    private TextField complaintmail;
+
+    @FXML
+    private TextField complaintphone;
+
+    @FXML
+    private TextArea complainttext;
+
+    @FXML
+    private Button complaintsubmit;
+    
+    @FXML
+    private Button complaintbtn;
+    
+    //Ends here
+    
+    
+    
     @FXML
     void handleClicks(ActionEvent event) {
     	if(event.getSource() == tet)
     	{
     		try {
 				client.close();
+		         DbConnect db = new DbConnect();
+				PreparedStatement stms;
+				String q = "update users set Status = ? where username = '"+user.getUsername()+"'";
+				Connection connection = db.getConnection();
+				try {
+					stms = connection.prepareStatement(q);
+					stms.setString(1, "0");
+					stms.executeUpdate();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -265,14 +350,161 @@ public class HomeController implements Initializable {
            // pnlcat.setStyle("-fx-background-color : #1620A1");
     	
            CatControlpnl.toFront();
+           CatControlpnl.setVisible(true);
        	Signuppan.setVisible(false);
            Loginpan.setVisible(false);
+           Complaintpnl.setVisible(false);
+           UserControlpnl.setVisible(false);
+           Orderspnl.setVisible(false);
         }
+    	
+    	
+    	
+    	if(event.getSource() == complaintbtn)
+    	{
+    		CatControlpnl.setVisible(false);
+    		Complaintpnl.setVisible(true);
+    		
+    	       	Signuppan.setVisible(false);
+    	           Loginpan.setVisible(false);
+    	          
+    	           UserControlpnl.setVisible(false);
+    	           Orderspnl.setVisible(false);
+    		Complaintpnl.toFront();
+    		complaintuser.setText(user.getUsername());
+    		complaintmail.setText(user.getEmail());
+    		complaintphone.setText(user.getFirstname());
+    		
+    		if(user.getRank().equals("2"))
+    				{
+paneowner.setVisible(true);
+paneuser.setVisible(false);
+
+
+
+
+
+
+ReportsList.clear();
+DbConnect db = new DbConnect();
+	
+	try {
+	Connection connection = db.getConnection();
+	ResultSet rs = connection.createStatement().executeQuery("SELECT * From Reports");
+	while(rs.next())
+	{	
+		Reports r = new Reports();
+		r.setusername(rs.getString(1));
+		r.setemail(rs.getString(2));
+		r.setdate(rs.getString(3));
+		r.setphone(rs.getString(4));
+		r.setcomplaint(rs.getString(5));
+		r.setstaus(rs.getString(6));
+	
+		ReportsList.add(r);
+		
+		System.out.print(r.getComplain() + " " + r.getDate() + " " + r.getEmail() + " " + r.getPhone() + " " + r.getStatus() + " " + r.getUsername()+"   ,   "  );
+	}
+} catch (SQLException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+	usernamecol.setCellValueFactory(
+			new PropertyValueFactory<>("username"));
+
+	emailcol.setCellValueFactory(
+    new PropertyValueFactory<>("email"));
+
+	datecol.setCellValueFactory(
+    new PropertyValueFactory<>("date"));
+
+	phonecol.setCellValueFactory(
+		    new PropertyValueFactory<>("phone"));
+	complaintcol.setCellValueFactory(
+		    new PropertyValueFactory<>("complain"));
+
+	
+	statuscol.setCellValueFactory(
+		    new PropertyValueFactory<>("status"));
+
+tablecomplain.setItems(null);
+tablecomplain.setItems(ReportsList);
+
+
+
+
+// TO DO
+/*
+
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+*/
+    				}
+    		else
+    		{
+    			paneowner.setVisible(false);
+    			paneuser.setVisible(true);
+    		}
+    		
+    	}
+    	if(event.getSource() == complaintsubmit)
+    	{
+    		  DbConnect db = new DbConnect();
+				PreparedStatement stms;
+				String q = "INSERT INTO Reports(ReporterName,ReporterEmail,ReporterPhone,ReporterComplaint,ReporterStatus) VALUES(?,?,?,?,?)";
+				
+				Connection connection = db.getConnection();
+				
+				try {
+					report.setcomplaint(complainttext.getText());
+					stms = connection.prepareStatement(q);
+					stms.setString(1,user.getUsername());
+					stms.setString(2, user.getEmail());
+	   stms.setString(3, user.getphone()); //Should be changed soon
+	   stms.setString(4,report.getComplain());
+	   stms.setString(5,"Pending");
+	   
+	 if(  stms.executeUpdate()>0)
+	   {
+		 JOptionPane.showMessageDialog(null, "We have recieved your complaint, we will make sure to sort things out in 24 hours!");
+		 CatControlpnl.setVisible(true);
+		 CatControlpnl.toFront();
+		 
+	   }
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+    		
+ 
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	if (event.getSource() == btnlogin) {
             // pnlcat.setStyle("-fx-background-color : #1620A1");
      	
     		
-    		
+    		   CatControlpnl.setVisible(false);
+    	       	Signuppan.setVisible(false);
+    	         
+    	           Complaintpnl.setVisible(false);
+    	           UserControlpnl.setVisible(false);
+    	           Orderspnl.setVisible(false);
             Loginpan.toFront();
         	Signuppan.setVisible(true);
             Loginpan.setVisible(true);
@@ -280,54 +512,18 @@ public class HomeController implements Initializable {
     	if(event.getSource() == btnfee)
     	{
     		Orderspnl.toFront();
+    		   CatControlpnl.setVisible(false);
+    	       	Signuppan.setVisible(false);
+    	           Loginpan.setVisible(false);
+    	           Complaintpnl.setVisible(false);
+    	           UserControlpnl.setVisible(false);
+    	           Orderspnl.setVisible(true);
     		Signuppan.setVisible(false);
             Loginpan.setVisible(false);
-         
-         
-    	
-    	}
-    	
-    	
-    	//Login to database using an account
-    	if(event.getSource() == login)
-    	{
-    		
-    		user.setusername(tf_username.getText());
-    		user.setpassword(pf_password.getText());
-    		DbConnect db = new DbConnect();
-    		Connection connection = db.getConnection();
-			try {
-				Statement stmt = connection.createStatement();
-				String sql = "SELECT * FROM users WHERE username = '"+user.getUsername()+" '  AND password = '"+user.getPassword()+"'";
-				ResultSet resultset = stmt.executeQuery(sql);
-				if(resultset.next())
-				{
-					
-						client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
-						 CatControlpnl.toFront();
-					       	Signuppan.setVisible(false);
-					           Loginpan.setVisible(false);
-					          labname.setText(user.getUsername());
-					         
-					          btnlogin.setText(user.getUsername());
-					          btnlogin.setDisable(true);
-					
-					     if(resultset.getString(9).equals("2"))     {
-					         	 btnuser.setVisible(true);
-					         	 btnworker.setVisible(true);
-					         	 btnsetting.setVisible(true);
-
-					          }
-				}	
-				
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			//Order Table View
-	         //DbConnect db = new DbConnect();
+          //Order Table View
+            OrdersList.clear();
+            
+	         DbConnect db = new DbConnect();
 	          try {
 	          	Connection con = db.getConnection();
 	          	if(client.name.equals("ameer"))
@@ -393,7 +589,71 @@ public class HomeController implements Initializable {
 	          	    new PropertyValueFactory<>("installments"));
 	          TableOrder.setItems(null);
 	          TableOrder.setItems(OrdersList);
-			 
+	          TableOrder.refresh();
+         
+    	
+    	}
+    	
+    	
+    	//Login to database using an account
+    	if(event.getSource() == login)
+    	{
+    		
+    		user.setusername(tf_username.getText());
+    		user.setpassword(pf_password.getText());
+    		DbConnect db = new DbConnect();
+    		Connection connection = db.getConnection();
+			try {
+				Statement stmt = connection.createStatement();
+				String sql = "SELECT * FROM users WHERE username = '"+user.getUsername()+" '  AND password = '"+user.getPassword()+"'";
+				ResultSet resultset = stmt.executeQuery(sql);
+				if(resultset.next())
+				{
+					if(resultset.getString(9).equals("0"))
+					{
+						client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
+						user.setId(resultset.getString(1));
+						user.setfirstname(resultset.getString(2));
+						user.setlastname(resultset.getString(3));
+						user.setemail(resultset.getString(4));
+						user.setcard(resultset.getString(7));
+						user.setDate(resultset.getString(8));
+						user.setStatus(resultset.getString(9));
+						user.setrank(resultset.getString(10));
+						user.setphone(resultset.getString(11));
+						PreparedStatement stms;
+						String q = "update users set Status = ? where username = '"+user.getUsername()+"'";
+						stms = connection.prepareStatement(q);
+						stms.setString(1, "1");
+						stms.executeUpdate();
+						 CatControlpnl.toFront();
+					       	Signuppan.setVisible(false);
+					           Loginpan.setVisible(false);
+					          labname.setText(user.getUsername());
+					         
+					          btnlogin.setText(user.getUsername());
+					          btnlogin.setDisable(true);
+					
+					     if(resultset.getString(10).equals("2"))     {
+					         	 btnuser.setVisible(true);
+					         	 btnworker.setVisible(true);
+					         	 btnsetting.setVisible(true);
+
+					          }
+					}
+					else
+					{
+						System.out.println("You're Already online");
+					}
+				}	
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 	          }
     	
 			
@@ -408,10 +668,10 @@ public class HomeController implements Initializable {
     		userreg.setfirstname(tf_firstnameSignup.getText());
     		userreg.setlastname(tf_LastNameSignup.getText());
     		userreg.setId(tf_IDSignup.getText());
-    		
+    		userreg.setphone(tf_phone.getText());
     		DbConnect db = new DbConnect();
          	Connection connection = db.getConnection();
-    		String q = "INSERT INTO users(username,email,password,ID,Firstname,Lastname,CreditCard) VALUES(?,?,?,?,?,?,?)";
+    		String q = "INSERT INTO users(username,email,password,ID,Firstname,Lastname,CreditCard,phone) VALUES(?,?,?,?,?,?,?,?)";
 			
 			
 			PreparedStatement stms;
@@ -425,6 +685,7 @@ public class HomeController implements Initializable {
    stms.setString(5,userreg.getFirstname());
    stms.setString(6,userreg.getLastname());
    stms.setString(7,userreg.getCard());
+   stms.setString(8,userreg.getCard());
    if(stms.executeUpdate()>0)
    {
     client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
@@ -450,8 +711,13 @@ public class HomeController implements Initializable {
     	if (event.getSource() == btnuser) {
            
     		UserControlpnl.toFront();
-    		Loginpan.setVisible(false);
-    		Signuppan.setVisible(false);
+    		
+    		   CatControlpnl.setVisible(false);
+    	       	Signuppan.setVisible(false);
+    	           Loginpan.setVisible(false);
+    	           Complaintpnl.setVisible(false);
+    	           UserControlpnl.setVisible(true);
+    	           Orderspnl.setVisible(false);
        
         }
     	if (event.getSource() == additem) {
@@ -551,6 +817,14 @@ idcol.setCellFactory(TextFieldTableCell.forTableColumn());
 	 Loginpan.toFront();
      Loginpan.setVisible(true);
      Signuppan.setVisible(false);
+     
+     
+     CatControlpnl.setVisible(false);
+        
+        Complaintpnl.setVisible(false);
+        UserControlpnl.setVisible(false);
+        Orderspnl.setVisible(false);
+     
  }
     
     @FXML  	
@@ -559,6 +833,12 @@ idcol.setCellFactory(TextFieldTableCell.forTableColumn());
    	Signuppan.toFront();
    	Signuppan.setVisible(true);
         Loginpan.setVisible(false);
+        CatControlpnl.setVisible(false);
+     
+           Loginpan.setVisible(false);
+           Complaintpnl.setVisible(false);
+           UserControlpnl.setVisible(false);
+           Orderspnl.setVisible(false);
         
     }
     

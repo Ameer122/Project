@@ -1,6 +1,6 @@
 package application;
 
-
+import javafx.beans.property.SimpleStringProperty;
 
 public class User {
 	private String id;
@@ -13,8 +13,8 @@ public class User {
 	private String card;
 	private String Date;
 	private String Status;
-	
-	
+	private String Rank;
+	private String phone;
 	
 //GET
 	
@@ -55,6 +55,14 @@ public class User {
 	{
 		return password;
 	}
+	public String getRank()
+	{
+		return Rank;
+	}
+	public String getphone()
+	{
+		return phone;
+	}
 	
 	//SET
 	public void setId(String str)
@@ -91,6 +99,14 @@ public class User {
 	public void setpassword(String str)
     {
 		this.password= str;
+    }
+	public void setrank(String str)
+    {
+		this.Rank= str;
+    }
+	public void setphone(String str)
+    {
+		this.phone= str;
     }
  
 
