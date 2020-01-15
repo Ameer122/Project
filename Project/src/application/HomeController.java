@@ -437,16 +437,6 @@ tablecomplain.setItems(ReportsList);
 /*
 
 
- 
-
- 
-
- 
-
-
-
- 
-
 
 */
     				}
@@ -476,7 +466,7 @@ tablecomplain.setItems(ReportsList);
 	   
 	 if(  stms.executeUpdate()>0)
 	   {
-		 JOptionPane.showMessageDialog(null, "We have recieved your complaint, we will make sure to sort things out in 24 hours!");
+		 JOptionPane.showMessageDialog(null, "We have recieved your complain, we will make sure to sort things out in 24 hours!");
 		 CatControlpnl.setVisible(true);
 		 CatControlpnl.toFront();
 		 
@@ -493,11 +483,47 @@ tablecomplain.setItems(ReportsList);
     	
     	
     	
-    	
-    	
-    	if (event.getSource() == btnlogin) {
+    	if (event.getSource() == btnlogin && btnlogin.getText().equals("Logout")) {
             // pnlcat.setStyle("-fx-background-color : #1620A1");
      	
+    		try {
+				client.close();
+		         DbConnect db = new DbConnect();
+				PreparedStatement stms;
+				String q = "update users set Status = ? where username = '"+user.getUsername()+"'";
+				Connection connection = db.getConnection();
+				try {
+					stms = connection.prepareStatement(q);
+					stms.setString(1, "0");
+					stms.executeUpdate();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    		   CatControlpnl.setVisible(true);
+    	       	Signuppan.setVisible(false);
+    	         
+    	           Complaintpnl.setVisible(false);
+    	           UserControlpnl.setVisible(false);
+    	           Orderspnl.setVisible(false);
+           // Loginpan.toFront();
+            CatControlpnl.toFront();
+        	Signuppan.setVisible(false);
+            Loginpan.setVisible(false);
+            btnlogin.setText("Login");
+            
+         }
+    	
+    	else	if (event.getSource() == btnlogin && btnlogin.getText().equals("Login")) {
+            // pnlcat.setStyle("-fx-background-color : #1620A1");
+     	
+    		
     		
     		   CatControlpnl.setVisible(false);
     	       	Signuppan.setVisible(false);
@@ -598,7 +624,7 @@ tablecomplain.setItems(ReportsList);
     	//Login to database using an account
     	if(event.getSource() == login)
     	{
-    		
+    		btnlogin.setText("Logout");
     		user.setusername(tf_username.getText());
     		user.setpassword(pf_password.getText());
     		DbConnect db = new DbConnect();
@@ -631,8 +657,8 @@ tablecomplain.setItems(ReportsList);
 					           Loginpan.setVisible(false);
 					          labname.setText(user.getUsername());
 					         
-					          btnlogin.setText(user.getUsername());
-					          btnlogin.setDisable(true);
+					       //   btnlogin.setText(user.getUsername());
+					       //   btnlogin.setDisable(true);
 					
 					     if(resultset.getString(10).equals("2"))     {
 					         	 btnuser.setVisible(true);
