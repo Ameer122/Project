@@ -7,6 +7,7 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String username;
+	
 	private String password;
 	
 	private String email;
@@ -15,7 +16,7 @@ public class User {
 	private String Status;
 	private String Rank;
 	private String phone;
-	
+	private String type;
 //GET
 	
 
@@ -108,6 +109,12 @@ public class User {
     {
 		this.phone= str;
     }
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
  
 
  

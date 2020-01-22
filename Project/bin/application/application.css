@@ -11,6 +11,16 @@
 {
 	-fx-background-color: #7156DD;
 }
+
+
+.roor
+{
+	 -fx-background-image: url("te.jpg");
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 900 506;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
+}
 .table-view .column-header,
 .table-view .column-header-background .fillter {
 	-fx-cell-size:20;
