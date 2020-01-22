@@ -38,6 +38,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -80,7 +81,7 @@ public FileInputStream fis;
 	private StringProperty name;
 	private StringProperty description;
 	private StringProperty price;
-	
+	private CheckBox checkbox;
     @FXML
     private Button Attach;
     
@@ -266,12 +267,13 @@ cl.sendtoserver();
 			e.printStackTrace();
 		}
     }
-    void ItemControllers(String id, String name, String description, String price)
+    void ItemControllers(String id, String name, String description, String price, CheckBox ch)
     {
     	this.id = new SimpleStringProperty(id);
     	this.description = new SimpleStringProperty(description);
     	this.name = new SimpleStringProperty(name);
     	this.price = new SimpleStringProperty(price);
+    this.checkbox = ch;
     	
     }
     public String getId()
@@ -333,6 +335,12 @@ public void initialize(URL arg0, ResourceBundle arg1) {
 @FXML
 void ChangeID(ActionEvent event) {	
 	
+}
+public CheckBox getCheckbox() {
+	return checkbox;
+}
+public void setCheckbox(CheckBox checkbox) {
+	this.checkbox = checkbox;
 }
 }
 

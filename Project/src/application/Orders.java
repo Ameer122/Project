@@ -10,7 +10,7 @@ public class Orders {
 	private String card;
 	private String type;
 	private String installments;
-	
+	private String Storetype;
 	
 	
 	//Get
@@ -82,6 +82,12 @@ public class Orders {
     {
 		this.name= str;
     }
+	public String getStoretype() {
+		return Storetype;
+	}
+	public void setStoretype(String storetype) {
+		Storetype = storetype;
+	}
 	
 	
 }

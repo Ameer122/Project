@@ -11,7 +11,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
@@ -40,11 +42,15 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.Connection;
+//import java.sql.Date;
 import java.sql.Date;
+//import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 import javax.net.ssl.SSLException;
@@ -59,6 +65,7 @@ import javafx.event.EventHandler;
 
 public class HomeController implements Initializable {
 	ObservableList<Orders> OrdersList = FXCollections.observableArrayList(); // Orders Table View
+	ObservableList<Busket> BusketList = FXCollections.observableArrayList(); // Orders Table View
 	ObservableList<Reports> ReportsList = FXCollections.observableArrayList(); // Orders Table View
 	public User user = new User();
 	public User userreg = new User();
@@ -112,6 +119,9 @@ public class HomeController implements Initializable {
     
 
     @FXML
+    private Button addbus;
+
+    @FXML
     private Button additem;
 
     @FXML
@@ -141,6 +151,8 @@ public class HomeController implements Initializable {
 
     @FXML
     private TableColumn<ItemController, FileInputStream> piccol;
+    @FXML
+    private TableColumn<ItemController, CheckBox> Selectcol;
     @FXML
     private Button edituser;
     
@@ -263,7 +275,7 @@ public class HomeController implements Initializable {
     // ends here
     
     
-    //Complaints 
+    //Complains 
     
     
     
@@ -320,10 +332,241 @@ public class HomeController implements Initializable {
     
     //Ends here
     
-    
-    
+    //Purshase Scene
     @FXML
+    private Pane Checkbusket;
+
+    @FXML
+    private TableView<Busket> tablepursh;
+
+    @FXML
+    private TableColumn<Busket, String> itecol;
+
+    @FXML
+    private TableColumn<Busket, String> prcol;
+
+    @FXML
+    private TableColumn<Busket, String> quanitycol;
+
+    @FXML
+    private CheckBox delivery;
+    @FXML
+    private CheckBox carde;
+
+    @FXML
+    private Label Orderpr;
+
+    @FXML
+    private Label Cardpr;
+
+    @FXML
+    private Label shippr;
+
+    @FXML
+    private Label totalpr;
+
+    @FXML
+    private TextField orderuser;
+
+    @FXML
+    private TextField orderaddress;
+
+    @FXML
+    private TextField orderphone;
+
+    @FXML
+    private TextField ordermail;
+
+    @FXML
+    private TextField ordercard;
+
+    @FXML
+    private Button complete;
+    @FXML
+    private Button mybusket;
+    @FXML
+    private Button card;
+    @FXML
+    private TextArea textorder;
+    //Ends here
+    @FXML
+    private Label numcar;
+
+    @FXML
+    private ComboBox<String> combo;
+    @FXML
+    private ComboBox<String> storecombo;
+    @FXML
+    private DatePicker orderdat;
+    ObservableList<String> storelist = FXCollections.observableArrayList("1","2");
+    ObservableList<String> comlist = FXCollections.observableArrayList("1","2","3","4","5","6","7","8","9","10","11","12");
+    @SuppressWarnings("deprecation")
+	@FXML
     void handleClicks(ActionEvent event) {
+    //Working on Purshase Scene
+    	
+    	
+    	if(event.getSource()== complete)
+    	{
+
+  		  DbConnect db = new DbConnect();
+				PreparedStatement stms;
+				String q = "INSERT INTO `Orders`(`Customer`, `Product Name`, `Product Price`, `Purchase Date`, `Delivery Date`, `Credit Card`, `Type of payment`, `Number of installments`, `Quanity`, `Message`,`Address`,`Type`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+				
+				Connection connection = db.getConnection();
+				
+				try {
+					  for(int i = 0; i<tablepursh.getItems().size(); i++) 
+					 	 {
+						  stms = connection.prepareStatement(q);
+						  stms.setString(1,user.getUsername());
+						  stms.setString(2, tablepursh.getItems().get(i).getName());
+						  stms.setString(3,tablepursh.getItems().get(i).getPrice());
+					
+						  java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
+						  stms.setTimestamp(4, date);
+						  stms.setString(5,((TextField)orderdat.getEditor()).getText());
+						
+						  stms.setString(6, user.getCard());
+						  stms.setString(7, "1");
+						  stms.setString(8, combo.getValue());
+						  stms.setString(9, tablepursh.getItems().get(i).getQuanity());
+						  stms.setString(10, textorder.getText());
+						  stms.setString(11, orderaddress.getText());
+						  stms.setString(12, user.getType());
+						   stms.executeUpdate();
+						   
+						  // c+=Integer.parseInt(tablepursh.getItems().get(i).getPrice()) * Integer.parseInt(tablepursh.getItems().get(i).getQuanity());
+					 	 }
+					
+					
+		
+	   
+	 
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    	}
+    	
+    	if(event.getSource() == mybusket)
+    	{
+    		 Checkbusket.setVisible(true);
+    		 catpan.setVisible(false);
+    		 pnlCat.setVisible(false);
+    		 mybusket.setVisible(false);
+    		 orderuser.setText(client.name);
+    		 orderphone.setText(user.getphone());
+    		 ordermail.setText(user.getEmail());
+    		 ordercard.setText(user.getCard());
+    		 
+    		 
+    		   DbConnect db = new DbConnect();
+ 	          try {
+ 	          	Connection con = db.getConnection();
+ 	          	
+ 	          	{
+ 	          		ResultSet rs = con.createStatement().executeQuery("SELECT * From Busket WHERE Username= '" + client.name + "'");
+ 	          	   	while(rs.next())
+ 		          	{	
+ 		          		Busket busket = new Busket();
+ 		          		busket.setUsername(rs.getString(1));
+ 		          		busket.setId(rs.getString(2));
+ 		          		busket.setName(rs.getString(3));
+busket.setDescription(rs.getString(4));
+busket.setPrice(rs.getString(5));
+busket.setQuanity(rs.getString(7));
+ 		          		
+ 		          		BusketList.add(busket);
+ 	          	}
+ 	          	}
+ 	          } catch (SQLException e) {
+ 	          	// TODO Auto-generated catch block
+ 	          	e.printStackTrace();
+ 	          }
+ 	          
+ 	          
+ 	        // @FXML
+ 	   //     private TableView<ItemController> tablepursh;
+
+ 	     
+ 	       itecol.setCellValueFactory(  new PropertyValueFactory<>("name"));
+
+ 	      prcol.setCellValueFactory(
+ 	            new PropertyValueFactory<>("price"));
+
+ 	     quanitycol.setCellValueFactory(
+ 	            new PropertyValueFactory<>("quanity"));
+
+ 	        
+ 	    tablepursh.setItems(null);
+ 	   tablepursh.setItems(BusketList);
+ 	  tablepursh.refresh();
+ 	
+ 	  int c = 0;
+ 	  Orderpr.setText(Integer.toString(c));
+ 	  for(int i = 0; i<tablepursh.getItems().size(); i++) 
+ 	 {
+ 		  c+=Integer.parseInt(tablepursh.getItems().get(i).getPrice()) * Integer.parseInt(tablepursh.getItems().get(i).getQuanity());
+ 	 }
+ 	 Orderpr.setText(Integer.toString(c));
+     	
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    	}
+    	
+    		if(event.getSource() == delivery)
+    		{
+    			if(delivery.isSelected()) {
+    			shippr.setText("15");
+    			orderaddress.setDisable(false);
+    			orderaddress.setEditable(true);
+    			//totalpr.setText(Integer.toString(Integer.parseInt(Orderpr.getText()) + Integer.parseInt(shippr.getText())));
+    			}
+    			else
+    			{
+    				shippr.setText("0");
+    				orderaddress.setDisable(true);
+    				
+    			}
+    			totalpr.setText(Integer.toString(Integer.parseInt(Orderpr.getText()) + Integer.parseInt(shippr.getText())));
+    		}
+    		if(event.getSource() == carde)
+    		{
+    			if(carde.isSelected()) {
+    				Cardpr.setText("15");
+    			textorder.setVisible(true);
+    		//	totalpr.setText(Integer.toString(Integer.parseInt(Orderpr.getText()) + Integer.parseInt(Cardpr.getText())));
+    			}
+    			else
+    			{
+    				Cardpr.setText("0");
+    				textorder.setVisible(false);
+    				//
+    			}
+    			totalpr.setText(Integer.toString(Integer.parseInt(Orderpr.getText()) + Integer.parseInt(Cardpr.getText())));
+    		}
+    	
+    	
+    	
+    	//Ends here
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	if(event.getSource() == tet)
     	{
     		try {
@@ -620,11 +863,60 @@ tablecomplain.setItems(ReportsList);
     	
     	}
     	
-    	
+    	if(event.getSource() == addbus)
+    	{
+    		DbConnect db = new DbConnect();
+    		Connection connection = db.getConnection();
+    		Connection con = db.getConnection();
+    		Statement stmt;
+    		PreparedStatement st;
+			try {
+				
+				stmt = connection.createStatement();
+				
+			
+    		for(int i = 0; i<table.getItems().size(); i++)
+    		{
+    			if(table.getItems().get(i).getCheckbox().isSelected())
+    			{
+    			//System.out.println(table.getItems().get(i).getId());
+    				//String sql = "SELECT * FROM item WHERE ID = '" + table.getItems().get(i).getId()+ "";
+    				String sql = "SELECT * FROM item WHERE ID = '"+table.getItems().get(i).getId()+" '  AND ID = '"+table.getItems().get(i).getId()+"'";
+    				
+    				try {
+						ResultSet rs = stmt.executeQuery(sql);
+						if(rs.next()) {
+							String sq = "INSERT INTO `Busket`(`Username`,`ID`, `Name`, `Description`, `Price`) VALUES (?,?,?,?,?)";
+						
+									st = con.prepareStatement(sq);
+									st.setString(1,user.getUsername());
+									st.setString(2,rs.getString(1));
+									st.setString(3,rs.getString(2));
+									st.setString(4,rs.getString(3));
+									st.setString(5,rs.getString(4));
+									st.executeUpdate();
+									
+						}
+						//System.out.println(rs.getString(1)+" "+rs.getString(2)+" " + rs.getString(3));
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    				
+    				
+					
+    			}
+    		}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+			
     	//Login to database using an account
     	if(event.getSource() == login)
     	{
-    		btnlogin.setText("Logout");
+    		
     		user.setusername(tf_username.getText());
     		user.setpassword(pf_password.getText());
     		DbConnect db = new DbConnect();
@@ -635,7 +927,7 @@ tablecomplain.setItems(ReportsList);
 				ResultSet resultset = stmt.executeQuery(sql);
 				if(resultset.next())
 				{
-					if(resultset.getString(9).equals("0"))
+					if(resultset.getString(9).equals("0") )
 					{
 						client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
 						user.setId(resultset.getString(1));
@@ -647,11 +939,13 @@ tablecomplain.setItems(ReportsList);
 						user.setStatus(resultset.getString(9));
 						user.setrank(resultset.getString(10));
 						user.setphone(resultset.getString(11));
+						user.setType(resultset.getString(12));
 						PreparedStatement stms;
 						String q = "update users set Status = ? where username = '"+user.getUsername()+"'";
 						stms = connection.prepareStatement(q);
 						stms.setString(1, "1");
 						stms.executeUpdate();
+						btnlogin.setText("Logout");
 						 CatControlpnl.toFront();
 					       	Signuppan.setVisible(false);
 					           Loginpan.setVisible(false);
@@ -687,7 +981,7 @@ tablecomplain.setItems(ReportsList);
     	if(event.getSource() == signupbtn)
     	{
     		
-    		userreg.setusername(tf_usernamesignup.getText());
+    	{userreg.setusername(tf_usernamesignup.getText());
     		userreg.setpassword(pf_passwordsignup.getText());
     		userreg.setemail(tf_emailSignup.getText());
     		userreg.setcard(tf_CardSignup.getText());
@@ -695,6 +989,10 @@ tablecomplain.setItems(ReportsList);
     		userreg.setlastname(tf_LastNameSignup.getText());
     		userreg.setId(tf_IDSignup.getText());
     		userreg.setphone(tf_phone.getText());
+    		userreg.setType(storecombo.getValue());}
+    	
+    	
+    	
     		DbConnect db = new DbConnect();
          	Connection connection = db.getConnection();
     		String q = "INSERT INTO users(username,email,password,ID,Firstname,Lastname,CreditCard,phone) VALUES(?,?,?,?,?,?,?,?)";
@@ -804,15 +1102,18 @@ tablecomplain.setItems(ReportsList);
 		{
     		oblist.clear();
 			DbConnect db = new DbConnect();
+			int i = 0;
 	     	
      		try {
 				Connection connection = db.getConnection();
 				ResultSet rs = connection.createStatement().executeQuery("SELECT * From item");
 				while(rs.next())
 				{	
+					CheckBox ch = new CheckBox("" + i);
 					ItemController s = new ItemController();
-					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
+					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),ch);
 					oblist.add(s);
+					i++;
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -828,7 +1129,8 @@ tablecomplain.setItems(ReportsList);
 
     	pricecol.setCellValueFactory(
                 new PropertyValueFactory<>("price"));
-        
+       
+ Selectcol.setCellValueFactory(new PropertyValueFactory<>("checkbox"));
        table.setItems(null);
  table.setItems(oblist);
  
@@ -876,16 +1178,21 @@ ObservableList<ItemController> oblist = FXCollections.observableArrayList(); // 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 //Catalog Table View
+		combo.setItems(comlist);
+		storecombo.setItems(storelist);
 		DbConnect db = new DbConnect();
      	
      		try {
+     			int i = 0;
 				Connection connection = db.getConnection();
 				ResultSet rs = connection.createStatement().executeQuery("SELECT * From item");
 				while(rs.next())
 				{	
+					CheckBox ch = new CheckBox("" + i);
 					ItemController s = new ItemController();
-					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
+					s.ItemControllers(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),ch);
 					oblist.add(s);
+					i++;
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -901,6 +1208,7 @@ ObservableList<ItemController> oblist = FXCollections.observableArrayList(); // 
 
     	pricecol.setCellValueFactory(
                 new PropertyValueFactory<>("price"));
+    	 Selectcol.setCellValueFactory(new PropertyValueFactory<>("checkbox"));
         
        table.setItems(null);
  table.setItems(oblist);
