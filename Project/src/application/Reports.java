@@ -15,6 +15,7 @@ public class Reports {
 	 
 	//GET
 	
+	
 	public String getUsername()
     {
     	return username;
