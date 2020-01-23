@@ -113,19 +113,37 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="OrderRepbtn" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="50.0" prefWidth="302.0" stylesheets="@application.css" text="Order reports" textFill="WHITE" visible="false">
-               <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/icons8_Home_32px.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
-            </Button>
+            <Button fx:id="OrderRepbtn" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="50.0" prefWidth="302.0" stylesheets="@application.css" text="Order reports" textFill="WHITE" visible="false"> 
+
+
+               <graphic> 
+
+
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true"> 
+
+
+                     <image> 
+
+                        <Image url="@../images/icons8_Home_32px.png" /> 
+
+
+                     </image> 
+
+
+                  </ImageView> 
+
+               </graphic> 
+
+               <padding> 
+
+                  <Insets left="50.0" /> 
+
+               </padding> 
+
+            </Button> 
+
             <Pane prefHeight="189.0" prefWidth="300.0" />
+            
             <Button fx:id="btnsetting" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="111.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="50.0" prefWidth="302.0" stylesheets="@application.css" text="Settings" textFill="WHITE" visible="false">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
