@@ -62,8 +62,6 @@ import javafx.scene.control.ComboBox;
 
 import javafx.event.EventHandler;
 
-
-
 public class HomeController implements Initializable {
 	ObservableList<Orders> OrdersList = FXCollections.observableArrayList(); // Orders Table View
 	ObservableList<Busket> BusketList = FXCollections.observableArrayList(); // Orders Table View
@@ -173,6 +171,11 @@ public class HomeController implements Initializable {
     @FXML
     private Button login;
     //Ends Here
+    // order reports start
+ 	@FXML
+ 	private Button OrderRepbtn;
+ 	//order reports end
+ 	
     //SignUp Panel
     
 
