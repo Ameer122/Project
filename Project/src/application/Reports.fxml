@@ -13,6 +13,7 @@
             <Font size="22.0" />
          </font>
       </Label>
+      
       <MenuButton fx:id="ReportDD" layoutX="49.0" layoutY="103.0" mnemonicParsing="false" onAction="#ReportTypeDDM" text="Report type">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#getMonthlyReport" text="Monthly report" />

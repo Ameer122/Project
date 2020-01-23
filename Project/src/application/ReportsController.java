@@ -89,6 +89,7 @@ public class ReportsController {
     	storeNum2LBL.setVisible(false);
     	StoreNum2TXT.setVisible(false);
     	
+    	
     }
     
     @FXML
