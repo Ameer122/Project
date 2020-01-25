@@ -2,6 +2,7 @@ package application;
 
 public class Orders {
 	
+	
 	private String name;
 	private String product;
 	private String price;

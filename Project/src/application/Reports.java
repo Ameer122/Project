@@ -4,6 +4,7 @@ import javafx.beans.property.StringProperty;
 
 public class Reports {
 	
+	
 	private String username;	
 	private String email;
 	private String date;
