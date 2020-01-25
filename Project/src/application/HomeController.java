@@ -1503,6 +1503,7 @@ CatControlpnl.toFront();
 		ItemController item = table.getSelectionModel().getSelectedItem();
 		item.setId(editedCell.getNewValue().toString());
 
+		
 	}
 	
 
