@@ -175,6 +175,11 @@ public class HomeController implements Initializable {
     @FXML
     private Button login;
     //Ends Here
+ // order reports start
+ 	@FXML
+ 	private Button OrderRepbtn;
+ 	// order reports end
+ 	
     //SignUp Panel
     
 
