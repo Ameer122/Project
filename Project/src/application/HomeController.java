@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -27,6 +28,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -65,6 +67,8 @@ public class HomeController implements Initializable {
 	ObservableList<Orders> OrdersList = FXCollections.observableArrayList(); // Orders Table View
 	ObservableList<Busket> BusketList = FXCollections.observableArrayList(); // Orders Table View
 	ObservableList<Reports> ReportsList = FXCollections.observableArrayList(); // Orders Table View
+	ObservableList<Messages> MessagesList = FXCollections.observableArrayList(); // Messages Table View
+
 	public User user = new User();
 	public User userreg = new User();
 	public Reports report = new Reports();
@@ -386,6 +390,89 @@ public class HomeController implements Initializable {
 	@FXML
 	private TextArea textorder;
 	// Ends here
+	
+	 //Custom Item
+    @FXML
+    private Button custom;
+
+    @FXML
+    private ComboBox<String> amountcombo;
+
+    @FXML
+    private ColorPicker colorpick;
+
+    @FXML
+    private ComboBox<String> potcombo;
+
+    @FXML
+    private ComboBox<String> ordercombo;
+
+    @FXML
+    private ComboBox<String> sizecombo;
+
+    @FXML
+    private Label customprice;
+    
+    
+    @FXML
+    private Pane CustomPane;
+    Color color = new Color(1,1,1,1);
+    ObservableList<String> amountlist = FXCollections.observableArrayList("1","2","3","4","5","6","7","8","9","10","11","12");
+    ObservableList<String> potlist = FXCollections.observableArrayList("Yes","No");
+    ObservableList<String> orderlist = FXCollections.observableArrayList("By color","By Size");
+    ObservableList<String> sizelist = FXCollections.observableArrayList("Big","Medium","Small");
+    //Ends Here
+    
+    //Messages
+    
+
+    
+    ObservableList<String> Messagecombo = FXCollections.observableArrayList(); // Messages Table View
+    @FXML
+    private Pane msgreadpnl;
+
+    @FXML
+    private TableView<Messages> tablemsg;
+
+    @FXML
+    private TableColumn<Messages, String> fromcol;
+
+    @FXML
+    private TableColumn<Messages, String> tocol;
+
+    @FXML
+    private TableColumn<Messages, String> msgdatecol;
+
+    @FXML
+    private TableColumn<Messages, String> msgcol;
+
+    @FXML
+    private Button sendmsg;
+
+    @FXML
+    private Pane msgsendpnl;
+    @FXML
+    private Pane Messagespnl;
+    @FXML
+    private TextField msguser;
+
+    @FXML
+    private TextField msgmail;
+
+    @FXML
+    private ComboBox<String> msgwho;
+
+    @FXML
+    private TextArea msgtext;
+  
+    Messages msgsend = new Messages();
+
+    @FXML
+    private Button sendmsgbtn;
+@FXML
+private Button messagesbtn;
+    //Ends Here
+	
 	@FXML
 	private Label numcar;
 
@@ -398,12 +485,209 @@ public class HomeController implements Initializable {
 	ObservableList<String> storelist = FXCollections.observableArrayList("1", "2");
 	ObservableList<String> comlist = FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9",
 			"10", "11", "12");
-
+	public int a = 0;
+	public int b = 0;
+	public int c = 0;
+	public int d = 0;
 	@SuppressWarnings("deprecation")
 	@FXML
 	void handleClicks(ActionEvent event) {
 		// Working on Purshase Scene
+//Working on Messages
+    	
+    	if(event.getSource() == messagesbtn)
+    	{
+    		Messagespnl.setVisible(true);
+    		Messagespnl.toFront();
+    		
+    		   CatControlpnl.setVisible(false);
+   	       	Signuppan.setVisible(false);
+   	           Loginpan.setVisible(false);
+   	           Complaintpnl.setVisible(false);
+   	           UserControlpnl.setVisible(false);
+   	           Orderspnl.setVisible(false);
+   		Signuppan.setVisible(false);
+           Loginpan.setVisible(false);
+         //Message Table View
+           MessagesList.clear();
+           
+	         DbConnect db = new DbConnect();
+	          try {
+	          	Connection con = db.getConnection();
+	          	{
+	          		ResultSet rs = con.createStatement().executeQuery("SELECT * From Messages WHERE Sender= '" + client.name + "' OR Receiver = '" +client.name+"'");
+	          	   	while(rs.next())
+		          	{	
+	          	   	  Messages msg = new Messages();	
+		          	msg.setFrom(rs.getString(1));
+		          	msg.setTo(rs.getString(2));
+		          	msg.setDate(rs.getString(3));
+		          	msg.setMessage(rs.getString(4));
+		          		
+		          		MessagesList.add(msg);
+	          	}
+	          	}
+	          } catch (SQLException e) {
+	          	// TODO Auto-generated catch block
+	          	e.printStackTrace();
+	          }
+	         fromcol.setCellValueFactory(  new PropertyValueFactory<>("from"));
 
+	         tocol.setCellValueFactory(
+	            new PropertyValueFactory<>("to"));
+
+	          msgdatecol.setCellValueFactory(
+	            new PropertyValueFactory<>("date"));
+
+	          msgcol.setCellValueFactory(
+	            new PropertyValueFactory<>("message"));
+	          
+	          tablemsg.setItems(null);
+	          tablemsg.setItems(MessagesList);
+	          tablemsg.refresh();	
+    	}
+    	
+    	
+if(event.getSource() == sendmsg)
+{
+	Messagecombo.clear();
+	msgreadpnl.setVisible(false);
+	msgsendpnl.setVisible(true);
+	msguser.setText(client.name);
+	msgmail.setText(user.getEmail());
+	DbConnect db = new DbConnect();
+    try {
+    	Connection con = db.getConnection();
+    	{
+    		ResultSet rs = con.createStatement().executeQuery("SELECT * From users");
+    	   	while(rs.next())
+        	{	
+        		String temp ;
+        		temp = rs.getString(5);
+        		
+        		Messagecombo.add(temp);
+    	}
+    	}
+    } catch (SQLException e) {
+    	// TODO Auto-generated catch block
+    	e.printStackTrace();
+    }
+    msgwho.setItems(Messagecombo);
+    
+    
+    
+   
+}
+if(event.getSource() == sendmsgbtn)
+{
+	msgreadpnl.setVisible(true);
+	msgsendpnl.setVisible(false);
+	tablemsg.refresh();
+	  DbConnect db = new DbConnect();
+		PreparedStatement stms;
+		String q = "INSERT INTO Messages(Sender,Receiver,Message) VALUES(?,?,?)";
+		
+		Connection connection = db.getConnection();
+		
+		try {
+			msgsend.setMessage(msgtext.getText());
+			msgsend.setFrom(client.name);
+			msgsend.setTo(msgwho.getValue());
+			//report.setcomplaint(complainttext.getText());
+			stms = connection.prepareStatement(q);
+			stms.setString(1,msgsend.getFrom());
+			stms.setString(2, msgsend.getTo());
+stms.setString(3, msgsend.getMessage()); //Should be changed soon
+
+
+if(  stms.executeUpdate()>0)
+{
+JOptionPane.showMessageDialog(null, "Your message has been sent to " + msgsend.getTo());
+CatControlpnl.setVisible(true);
+CatControlpnl.toFront();
+
+}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+}
+    	
+    	
+    	
+    	
+    	
+    	//End here messages
+    	
+    	
+    	
+//Working on Custom Item 
+    	if(event.getSource() == custom && custom.getText().equals("Custom Item"))
+    	{
+    		custom.setText("Catalog");
+    		labelname4.setText("Custom Item");
+    		CustomPane.setVisible(true);
+    		table.setVisible(false);
+    		
+    	}
+    	else if(event.getSource() == custom && custom.getText().equals("Catalog"))
+    	{
+    		custom.setText("Custom Item");
+    		labelname4.setText("Catalog");
+    		CustomPane.setVisible(false);
+    		table.setVisible(true);
+    		
+    	}
+    	if(event.getSource() == potcombo)
+    	{
+    		if(potcombo.getValue().equals("Yes"))
+    			b = 40;
+    		else {
+    			b = 0;
+    			
+    		}	
+    			customprice.setText(Integer.toString(a+b+c+d));
+    		
+    	}
+    	if(event.getSource() == sizecombo)
+    	{
+    		if(sizecombo.getValue().equals("Small"))
+    			c = 5;
+    		else if (sizecombo.getValue().equals("Medium"))
+    			c = 10;
+    		else if (sizecombo.getValue().equals("Big"))
+    				c = 15;
+    		
+    		customprice.setText(Integer.toString(a+b+c+d));
+    	}
+    	if(event.getSource() == colorpick)
+    	{
+             color = colorpick.getValue();
+            System.out.println(color.toString());
+    		if(color.toString().equals("0xffffffff"))
+    		{
+        		d = 8;
+        		
+        		
+    		}        	else d = 15;
+    		
+    		customprice.setText(Integer.toString(a+b+c+d));
+    	}
+    	if(event.getSource() == amountcombo)
+    	{
+    		
+    		a = (Integer.parseInt(amountcombo.getValue()) * 10);
+    	
+    	
+    		customprice.setText(Integer.toString(a+b+c+d));
+    		System.out.println(a);
+    	}
+    	
+    	
+    	//Ends Here Custom Item
+    	
+    	
 		if (event.getSource() == complete) {
 
 			DbConnect db = new DbConnect();
@@ -780,7 +1064,7 @@ public class HomeController implements Initializable {
 
 		}
 
-		if (event.getSource() == addbus) {
+		if (event.getSource() == addbus && custom.getText().equals("Custom Item")) {
 			DbConnect db = new DbConnect();
 			Connection connection = db.getConnection();
 			Connection con = db.getConnection();
@@ -826,6 +1110,41 @@ public class HomeController implements Initializable {
 				e1.printStackTrace();
 			}
 		}
+		else if(event.getSource() == addbus && custom.getText().equals("Catalog"))
+    	{
+    		DbConnect db = new DbConnect();
+    		
+    		Connection con = db.getConnection();
+    		
+    		PreparedStatement st;
+			try {
+				
+					
+							String sq = "INSERT INTO `Busket`(`Username`,`ID`, `Name`, `Description`, `Price`,`Quanity`) VALUES (?,?,?,?,?,?)";
+						
+									st = con.prepareStatement(sq);
+									st.setString(1,user.getUsername());
+									st.setString(2,"00");
+									st.setString(3,"Custom");
+									st.setString(4,color.toString() + "Flowers" + "With a flower pot ? " +potcombo.getValue() +" Flowers Order" + ordercombo.getValue() + " ,flower size:  "+ sizecombo.getValue() );
+									st.setString(5, customprice.getText());
+									st.setString(6,amountcombo.getValue());
+									
+									st.executeUpdate();
+									
+						}
+						
+					
+    				
+    				
+					
+    			
+    		
+			 catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
 		
 		if (event.getSource() == OrderRepbtn) {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Reports.fxml"));
@@ -928,7 +1247,8 @@ public class HomeController implements Initializable {
 				stms.setString(5, userreg.getFirstname());
 				stms.setString(6, userreg.getLastname());
 				stms.setString(7, userreg.getCard());
-				stms.setString(8, userreg.getCard());
+				stms.setString(8, userreg.getphone());
+				stms.setString(9, userreg.getType());
 				if (stms.executeUpdate() > 0) {
 					client = new ClientConsole(user.getUsername(), "127.0.0.1", 5555);
 					CatControlpnl.toFront();
@@ -938,6 +1258,23 @@ public class HomeController implements Initializable {
 
 					btnlogin.setVisible(false);
 				}
+   stms.setString(3,  userreg.getPassword());    
+   stms.setString(4, userreg.getId());
+   stms.setString(5,userreg.getFirstname());
+   stms.setString(6,userreg.getLastname());
+   stms.setString(7,userreg.getCard());
+   stms.setString(8,userreg.getphone());
+   stms.setString(9,userreg.getType());
+   if(stms.executeUpdate()>0)
+   {
+    client = new ClientConsole(user.getUsername(),"127.0.0.1",5555);
+   CatControlpnl.toFront();
+  	Signuppan.setVisible(false);
+      Loginpan.setVisible(false);
+     labname.setText(user.getUsername());
+  
+     btnlogin.setVisible(false);
+   }
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1071,6 +1408,18 @@ public class HomeController implements Initializable {
 //Catalog Table View
 		combo.setItems(comlist);
 		storecombo.setItems(storelist);
+		//Customeitem
+		amountcombo.setItems(amountlist);
+
+		
+	 potcombo.setItems(potlist);
+
+		   ordercombo.setItems(orderlist);
+
+		   sizecombo.setItems(sizelist);
+
+		   
+		//ends
 		DbConnect db = new DbConnect();
 
 		try {
@@ -1143,6 +1492,7 @@ public class HomeController implements Initializable {
 		TableUser.setItems(olist);
 
 	}
+	
 
 	public void ChangeFirst(CellEditEvent editedCell) {
 		ItemController item = table.getSelectionModel().getSelectedItem();
@@ -1154,6 +1504,7 @@ public class HomeController implements Initializable {
 		item.setId(editedCell.getNewValue().toString());
 
 	}
+	
 
 	public void ChangeD(CellEditEvent editedCell) {
 		ItemController item = table.getSelectionModel().getSelectedItem();
