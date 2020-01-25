@@ -11,7 +11,25 @@
 {
 	-fx-background-color: #7156DD;
 }
+.jfx-combo-box {
+	-fx-background-color:  #3F2B63;
+}
 
+.jfx-combo-box .label {
+	-fx-background-color:  #3F2B63;
+	-fx-text-fill: WHITE;
+	
+}
+.jfx-combo-box .list-cell{
+	-fx-text-fill: RED;
+}
+.jfx-combo-box .list-view{
+	-fx-text-fill: #3F2B63;
+}
+.jfx-combo-box .combo-box-base{
+    -fx-background-color: RED;
+ 
+}
 
 .roor
 {
