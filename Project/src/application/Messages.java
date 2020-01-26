@@ -7,7 +7,6 @@ public class Messages {
 	private String message;
 	
 	
-	
 	public String getFrom() {
 		return from;
 	}

@@ -878,4 +878,3 @@
       <Button fx:id="tet" layoutX="546.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleClicks" text="Button" visible="false" />
    </children>
 </AnchorPane>
-

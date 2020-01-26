@@ -21,7 +21,6 @@ public class User {
 	
 
 	
-	
 	public String getId()
     {
     	return id;

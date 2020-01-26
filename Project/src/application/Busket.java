@@ -1,6 +1,5 @@
 package application;
 
-
 public class Busket {
 	private String username;
 	private String id;
