@@ -24,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ReportsController {
 	
+	
 	private int storeNum1 = -1;
 	private int storeNum2 = -1;
 	private String date1;

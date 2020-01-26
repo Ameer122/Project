@@ -54,6 +54,7 @@ import javafx.stage.StageStyle;
 
 public class ItemController implements Initializable {
 
+	
     @FXML
     public TextField ID;
 

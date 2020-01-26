@@ -13,7 +13,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-		
+	
+			
 		//	ClientConsole client = new ClientConsole("user","127.0.0.1",5555);
 			
 
